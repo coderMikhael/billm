@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AT&T Billing – Main Page</title>
+<style>
+  :root{--bg:#0e1116;--card:#151a21;--muted:#9aa4b2;--text:#e6edf3;--accent:#4ea1ff;--ok:#2ecc71;--warn:#f1c40f;--danger:#e74c3c;--border:#222a33}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  .wrap{max-width:1120px;margin:0 auto;padding:22px}
+  .pill{padding:6px 10px;border-radius:999px;background:#0c121a;border:1px solid var(--border)}
+  .muted{color:var(--muted)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .spacer{flex:1}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+  h1{font-size:18px;margin:0 0 6px}
+  h2{font-size:15px;margin:0 0 8px;color:var(--muted)}
+  label.small{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+  input[type="text"],input[type="number"],input[type="month"]{
+    width:100%;background:#0e141c;border:1px solid var(--border);border-radius:10px;color:var(--text);padding:9px 10px;outline:none
+  }
+  input[type="number"]{appearance:textfield}
+  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  button{background:#0f1721;color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:10px;cursor:pointer}
+  button.primary{background:var(--accent);border-color:#3a8be0;color:#04101f}
+  button.ghost{background:transparent}
+  button.ok{background:var(--ok);border-color:#1ea85e;color:#06100c}
+  button.warn{background:var(--warn);border-color:#caa316;color:#1a1600}
+  table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  thead th{position:sticky;top:0;background:#0f141b;border-bottom:1px solid var(--border);font-weight:600;padding:10px;text-align:left}
+  tbody td{border-bottom:1px solid var(--border);padding:8px}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#101720}
+  td.center,th.center{text-align:center}
+  .num{width:120px}
+  .phone{width:170px}
+  .notes{min-width:200px}
+  .totals{display:flex;gap:16px;justify-content:flex-end;margin-top:10px}
+  .totals .pill{background:#0f141b}
+  /* Modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
+  .modal{width:min(980px,95vw);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .hidden{display:none}
+  .dim{opacity:.8}
+  .sectionTitle{font-weight:600;color:var(--muted);margin:12px 0 6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <h1>AT&amp;T Billing (Main Page)</h1>
+    <span id="cycleLabel" class="pill"></span>
+    <span id="todayLabel" class="pill muted"></span>
+    <div class="spacer"></div>
+    <button id="configBtn" class="ghost dim" title="Configure people">Config</button>
+    <button id="prevCycleBtn" class="ghost">◀ Prev</button>
+    <button id="nextCycleBtn" class="ghost">Next ▶</button>
+    <button id="saveWebBtn" class="primary">Save to Web</button>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <h2>Bill</h2>
+    <label class="small">Bill Amount (for this cycle)</label>
+    <input id="billAmount" type="number" step="0.01" min="0" placeholder="0.00" />
+    <div class="row" style="margin-top:8px">
+      <span id="ackBadge" class="pill">Not confirmed yet</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:10px">Lines (driven by Config &amp; dates)</h2>
+    <div style="overflow:auto">
+      <table>
+        <thead>
+          <tr>
+            <th class="center">Informed?</th>
+            <th>Sr_no</th>
+            <th>Name</th>
+            <th>Ph_no</th>
+            <th>Amount</th>
+            <th>Balance_due</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="totals">
+      <span class="pill">Total Amount: <b id="totalAmount">0.00</b></span>
+      <span class="pill">Total Balance Due: <b id="totalDue">0.00</b></span>
+    </div>
+  </div>
+</div>
+
+<!-- 19th-day Prompt -->
+<div id="billPrompt" class="modal-backdrop">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h2 style="margin:0">AT&amp;T Bill Check</h2>
+      <button id="bpClose" class="ghost">✕</button>
+    </div>
+    <p>Has the AT&amp;T bill been generated?</p>
+    <div class="row">
+      <button id="bpYes" class="ok">Yes</button>
+      <button id="bpSnooze">Ask tomorrow</button>
+    </div>
+  </div>
+</div>
+
+<!-- Config Modal -->
+<div id="configModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 style="margin:0">Config – People</h2>
+      <button id="cfgClose" class="ghost">✕</button>
+    </div>
+
+    <div class="row" style="margin-bottom:8px">
+      <button id="cfgAdd" class="ghost">+ Add Person</button>
+      <span class="muted">Active when <b>Archive_month/year</b> is empty and cycle ≥ <b>Active_month/year</b>. “Archive” sets the archive date to the <b>next cycle</b>.</span>
+    </div>
+
+    <div class="sectionTitle">Active</div>
+    <div style="overflow:auto; max-height:34vh;">
+      <table>
+        <thead>
+          <tr>
+            <th>Sr_No</th>
+            <th>Name</th>
+            <th>Ph_No</th>
+            <th>Active_month/year</th>
+            <th>Archive_month/year</th>
+            <th class="center">Archive → next</th>
+          </tr>
+        </thead>
+        <tbody id="cfgActiveBody"></tbody>
+      </table>
+    </div>
+
+    <div class="sectionTitle">Archived</div>
+    <div style="overflow:auto; max-height:34vh;">
+      <table>
+        <thead>
+          <tr>
+            <th>Sr_No</th>
+            <th>Name</th>
+            <th>Ph_No</th>
+            <th>Active_month/year</th>
+            <th>Archive_month/year</th>
+          </tr>
+        </thead>
+        <tbody id="cfgArchivedBody"></tbody>
+      </table>
+    </div>
+
+    <div class="row" style="margin-top:10px;justify-content:flex-end">
+      <button id="cfgSave" class="primary">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== EDIT THESE for “Save to Web” (2 files) ===== */
+const OWNER       = 'coderMikhael';
+const REPO        = 'billm';
+const BRANCH      = 'main';                 // or 'main'
+const PATH_STATE  = 'data/att-billing.json';    // cycles: amounts/balances/notes
+const PATH_CONFIG = 'data/att-config.json';     // central people config
+const TOKEN       = 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+/* ================================================ */
+
+const STORAGE_STATE  = 'att.billing.state.v6';
+const STORAGE_CONFIG = 'att.billing.config.v2';
+const FILE_SCHEMA_VERSION = 1;
+
+/* ---- Cycle helpers (10th → 9th) ---- */
+function pad(n){ return String(n).padStart(2,'0'); }
+function keyFromDate(d=new Date()){
+  let y=d.getFullYear(), m=d.getMonth(), day=d.getDate();
+  if(day < 10){ m -= 1; if(m<0){ m=11; y-=1; } }
+  return `${y}-${pad(m+1)}`;
+}
+function startFromKey(key){ const [y,m]=key.split('-').map(Number); return new Date(y, m-1, 10); }
+function nextKey(key){ const s=startFromKey(key); const n=new Date(s.getFullYear(), s.getMonth()+1, 10); return `${n.getFullYear()}-${pad(n.getMonth()+1)}`; }
+function prevKey(key){ const s=startFromKey(key); const p=new Date(s.getFullYear(), s.getMonth()-1, 10); return `${p.getFullYear()}-${pad(p.getMonth()+1)}`; }
+function rangeFromKey(key){ const s=startFromKey(key); const e=new Date(s.getFullYear(), s.getMonth()+1, 9); return [s,e]; }
+function fmtDate(dt){ return dt.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
+
+/* ---- Data shapes ----
+STATE.json  { version, settings:{lastAckCycleKey}, cycles:{ [key]: { billAmount, rows:[ {personKey, informed, amount, balance, notes} ] } } }
+CONFIG.json { version, people:[ {sr_no, name, phone, activeFrom:'YYYY-MM', archiveFrom:'YYYY-MM'|null} ] }
+personKey = phone (assumed unique)
+-------------------------------------------------------- */
+function newState(){ return { version:FILE_SCHEMA_VERSION, settings:{ lastAckCycleKey:null }, cycles:{} }; }
+function newConfig(){ return { version:FILE_SCHEMA_VERSION, people:[] }; }
+
+let STATE  = loadJSON(STORAGE_STATE)  || newState();
+let CONFIG = loadJSON(STORAGE_CONFIG) || newConfig();
+let CURRENT_KEY = keyFromDate(new Date());
+
+/* ---- Storage ---- */
+function loadJSON(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch{return null} }
+function saveJSON(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+/* ---- GitHub Contents API ---- */
+async function repoGetFile(ownerRepo, path, branch){
+  const res = await fetch(`https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`, {
+    headers: TOKEN ? {Authorization:'Bearer '+TOKEN, Accept:'application/vnd.github+json'} : {Accept:'application/vnd.github+json'}
+  });
+  if(res.status===404) return null;
+  if(!res.ok){
+    const j = await res.json().catch(()=>({}));
+    throw new Error((j.message||'HTTP '+res.status));
+  }
+  return res.json();
+}
+async function repoPutFile(ownerRepo, path, branch, content, sha, message){
+  const body = {
+    message: message || 'Update ATT billing data',
+    content: btoa(unescape(encodeURIComponent(content))),
+    branch
+  };
+  if(sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}`, {
+    method:'PUT',
+    headers: {Authorization:'Bearer '+TOKEN, Accept:'application/vnd.github+json'},
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    const j = await res.json().catch(()=>({}));
+    throw new Error((j.message||'HTTP '+res.status));
+  }
+  return res.json();
+}
+
+/* ---- DOM ---- */
+const el = {
+  cycleLabel: document.getElementById('cycleLabel'),
+  todayLabel: document.getElementById('todayLabel'),
+  billAmount: document.getElementById('billAmount'),
+  ackBadge:   document.getElementById('ackBadge'),
+  tbody:      document.getElementById('tbody'),
+  totalAmount:document.getElementById('totalAmount'),
+  totalDue:   document.getElementById('totalDue'),
+  prevCycleBtn: document.getElementById('prevCycleBtn'),
+  nextCycleBtn: document.getElementById('nextCycleBtn'),
+  saveWebBtn: document.getElementById('saveWebBtn'),
+  // prompt
+  billPrompt: document.getElementById('billPrompt'),
+  bpClose:    document.getElementById('bpClose'),
+  bpYes:      document.getElementById('bpYes'),
+  bpSnooze:   document.getElementById('bpSnooze'),
+  // config
+  configBtn:  document.getElementById('configBtn'),
+  configModal:document.getElementById('configModal'),
+  cfgClose:   document.getElementById('cfgClose'),
+  cfgAdd:     document.getElementById('cfgAdd'),
+  cfgActiveBody:   document.getElementById('cfgActiveBody'),
+  cfgArchivedBody: document.getElementById('cfgArchivedBody'),
+  cfgSave:    document.getElementById('cfgSave'),
+};
+
+/* ---- Business rules ---- */
+// active if: (archiveFrom is null) AND (activeFrom <= key)
+function personActiveInCycle(p, key){
+  const aFrom = p.activeFrom || '0000-01';
+  const aStop = p.archiveFrom || null; // null means still active
+  const started = (aFrom <= key);
+  const notStopped = (aStop === null) || (key < aStop);
+  return started && notStopped;
+}
+
+// Build cycle rows from config; Sr_no in table is sequential 1..N
+function ensureCycleRowsFromConfig(key){
+  if(!STATE.cycles[key]) STATE.cycles[key] = { billAmount:0, rows:[] };
+  const prev = Object.fromEntries((STATE.cycles[key].rows||[]).map(r=>[r.personKey, r]));
+  const activePeople = (CONFIG.people||[])
+    .filter(p=>personActiveInCycle(p, key))
+    .sort((a,b)=>(a.sr_no||0)-(b.sr_no||0));
+  const rows = activePeople.map((p, idx)=>{
+    const pk = (p.phone||'').trim();
+    const old = prev[pk];
+    return {
+      personKey: pk,
+      informed: old ? !!old.informed : false,
+      amount:   old ? Number(old.amount||0)  : 0,
+      balance:  old ? Number(old.balance||0) : 0,
+      notes:    old ? (old.notes||'') : '',
+      name:     p.name||'',
+      phone:    p.phone||'',
+      sr_no:    idx+1 // sequential for table, no gaps
+    };
+  });
+  STATE.cycles[key].rows = rows;
+}
+
+/* ---- Render ---- */
+function render(){
+  const [s,e] = rangeFromKey(CURRENT_KEY);
+  el.cycleLabel.textContent = `Cycle ${fmtDate(s)} – ${fmtDate(e)} (${CURRENT_KEY})`;
+  el.todayLabel.textContent = `Today: ${fmtDate(new Date())}`;
+
+  ensureCycleRowsFromConfig(CURRENT_KEY);
+
+  el.billAmount.value = STATE.cycles[CURRENT_KEY].billAmount ?? 0;
+  el.ackBadge.textContent = (STATE.settings.lastAckCycleKey===CURRENT_KEY)
+    ? `Confirmed for ${CURRENT_KEY}` : `Not confirmed for ${CURRENT_KEY}`;
+
+  renderRows();
+  updateTotals();
+  maybeShowPrompt();
+}
+
+function renderRows(){
+  const rows = STATE.cycles[CURRENT_KEY].rows || [];
+  el.tbody.innerHTML = '';
+  rows.forEach((r)=>{
+    const tr = document.createElement('tr');
+
+    const tdInf = document.createElement('td'); tdInf.className='center';
+    const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!r.informed;
+    cb.addEventListener('change', ()=>{ r.informed=cb.checked; saveJSON(STORAGE_STATE, STATE); });
+    tdInf.appendChild(cb);
+
+    const tdSr  = document.createElement('td'); tdSr.textContent = r.sr_no;
+
+    const tdNm  = document.createElement('td');
+    const nm = document.createElement('input'); nm.type='text'; nm.value=r.name||''; nm.placeholder='Full name';
+    nm.addEventListener('input', ()=>{ r.name=nm.value; saveJSON(STORAGE_STATE, STATE); });
+    tdNm.appendChild(nm);
+
+    const tdPh  = document.createElement('td');
+    const ph = document.createElement('input'); ph.type='text'; ph.className='phone'; ph.value=r.phone||''; ph.placeholder='555-123-4567';
+    ph.addEventListener('input', ()=>{ r.phone=ph.value; r.personKey=(ph.value||'').trim(); saveJSON(STORAGE_STATE, STATE); });
+    tdPh.appendChild(ph);
+
+    const tdAmt = document.createElement('td');
+    const amt = document.createElement('input'); amt.type='number'; amt.step='0.01'; amt.min='0'; amt.className='num'; amt.value=r.amount ?? 0;
+    amt.addEventListener('input', ()=>{ r.amount=parseFloat(amt.value||'0'); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
+    tdAmt.appendChild(amt);
+
+    const tdBal = document.createElement('td');
+    const bal = document.createElement('input'); bal.type='number'; bal.step='0.01'; bal.min='0'; bal.className='num'; bal.value=r.balance ?? 0;
+    bal.addEventListener('input', ()=>{ r.balance=parseFloat(bal.value||'0'); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
+    tdBal.appendChild(bal);
+
+    const tdNt  = document.createElement('td');
+    const nt = document.createElement('input'); nt.type='text'; nt.className='notes'; nt.placeholder='Notes'; nt.value=r.notes||'';
+    nt.addEventListener('input', ()=>{ r.notes=nt.value; saveJSON(STORAGE_STATE, STATE); });
+    tdNt.appendChild(nt);
+
+    tr.append(tdInf, tdSr, tdNm, tdPh, tdAmt, tdBal, tdNt);
+    el.tbody.appendChild(tr);
+  });
+}
+
+function updateTotals(){
+  const rows = STATE.cycles[CURRENT_KEY].rows || [];
+  const totAmt = rows.reduce((s,r)=>s+Number(r.amount||0),0);
+  const totDue = rows.reduce((s,r)=>s+Number(r.balance||0),0);
+  el.totalAmount.textContent = totAmt.toFixed(2);
+  el.totalDue.textContent    = totDue.toFixed(2);
+}
+
+/* ---- Events: main ---- */
+document.getElementById('billAmount').addEventListener('input', ()=>{
+  if(!STATE.cycles[CURRENT_KEY]) STATE.cycles[CURRENT_KEY]={billAmount:0, rows:[]};
+  STATE.cycles[CURRENT_KEY].billAmount = parseFloat(document.getElementById('billAmount').value||'0');
+  saveJSON(STORAGE_STATE, STATE);
+});
+el.prevCycleBtn.addEventListener('click', ()=>{
+  CURRENT_KEY = prevKey(CURRENT_KEY);
+  if(!STATE.cycles[CURRENT_KEY]) STATE.cycles[CURRENT_KEY]={billAmount:0, rows:[]};
+  ensureCycleRowsFromConfig(CURRENT_KEY);
+  saveJSON(STORAGE_STATE, STATE);
+  render();
+});
+el.nextCycleBtn.addEventListener('click', ()=>{
+  CURRENT_KEY = nextKey(CURRENT_KEY);
+  if(!STATE.cycles[CURRENT_KEY]) STATE.cycles[CURRENT_KEY]={billAmount:0, rows:[]};
+  ensureCycleRowsFromConfig(CURRENT_KEY);
+  saveJSON(STORAGE_STATE, STATE);
+  render();
+});
+
+/* ---- 19th-day prompt (today’s cycle only) ---- */
+let snoozeUntil = null;
+function maybeShowPrompt(){
+  const todaysKey = keyFromDate(new Date());
+  if(CURRENT_KEY !== todaysKey){ el.billPrompt.style.display='none'; return; }
+  const today = new Date();
+  if(snoozeUntil && today < snoozeUntil){ el.billPrompt.style.display='none'; return; }
+  if(today.getDate() >= 19 && STATE.settings.lastAckCycleKey !== todaysKey){
+    el.billPrompt.style.display='flex';
+  }else{
+    el.billPrompt.style.display='none';
+  }
+}
+el.bpClose.addEventListener('click', ()=> el.billPrompt.style.display='none'));
+el.bpYes.addEventListener('click', ()=>{
+  const todaysKey = keyFromDate(new Date());
+  STATE.settings.lastAckCycleKey = todaysKey;
+  snoozeUntil = null;
+  saveJSON(STORAGE_STATE, STATE);
+  render();
+  el.billPrompt.style.display='none';
+});
+el.bpSnooze.addEventListener('click', ()=>{
+  const t = new Date();
+  snoozeUntil = new Date(t.getFullYear(), t.getMonth(), t.getDate()+1, 0,0,0);
+  el.billPrompt.style.display='none';
+});
+
+/* ---- Config Modal ---- */
+el.configBtn.addEventListener('click', ()=>{ renderConfigTables(); el.configModal.style.display='flex'; });
+el.cfgClose.addEventListener('click', ()=> el.configModal.style.display='none');
+el.cfgSave.addEventListener('click', ()=>{
+  // normalize sr_no sequentially across entire people list (active+archived combined order)
+  CONFIG.people.sort((a,b)=>(a.sr_no||0)-(b.sr_no||0)).forEach((p,i)=> p.sr_no = i+1);
+  saveJSON(STORAGE_CONFIG, CONFIG);
+  ensureCycleRowsFromConfig(CURRENT_KEY);
+  saveJSON(STORAGE_STATE, STATE);
+  render();
+  el.configModal.style.display='none';
+});
+el.cfgAdd.addEventListener('click', ()=>{
+  CONFIG.people.push({
+    sr_no:(CONFIG.people.length+1),
+    name:'', phone:'',
+    activeFrom:keyFromDate(new Date()),
+    archiveFrom:null
+  });
+  saveJSON(STORAGE_CONFIG, CONFIG);
+  renderConfigTables();
+});
+
+function renderConfigTables(){
+  const active = [], archived = [];
+  (CONFIG.people||[]).forEach(p=>{
+    if(p.archiveFrom) archived.push(p); else active.push(p);
+  });
+  // Sort each by sr_no
+  active.sort((a,b)=>(a.sr_no||0)-(b.sr_no||0));
+  archived.sort((a,b)=>(a.sr_no||0)-(b.sr_no||0));
+  el.cfgActiveBody.innerHTML = '';
+  el.cfgArchivedBody.innerHTML = '';
+
+  active.forEach((p, idx)=> el.cfgActiveBody.appendChild(configRow(p, idx, true)));
+  archived.forEach((p, idx)=> el.cfgArchivedBody.appendChild(configRow(p, idx, false)));
+}
+
+function configRow(p, idx, isActiveSection){
+  const tr = document.createElement('tr');
+
+  // Sr_No (display only; we renumber on save)
+  const tdSr = document.createElement('td'); tdSr.textContent = p.sr_no || (idx+1);
+
+  // Name
+  const tdNm = document.createElement('td');
+  const nm = document.createElement('input'); nm.type='text'; nm.value=p.name||''; nm.placeholder='Full name';
+  nm.addEventListener('input', ()=>{ p.name=nm.value; saveJSON(STORAGE_CONFIG, CONFIG); });
+  tdNm.appendChild(nm);
+
+  // Phone
+  const tdPh = document.createElement('td');
+  const ph = document.createElement('input'); ph.type='text'; ph.className='phone'; ph.value=p.phone||''; ph.placeholder='555-123-4567';
+  ph.addEventListener('input', ()=>{ p.phone=ph.value; saveJSON(STORAGE_CONFIG, CONFIG); });
+  tdPh.appendChild(ph);
+
+  // Active_from
+  const tdAf = document.createElement('td');
+  const af = document.createElement('input'); af.type='month'; af.value=(p.activeFrom||'').slice(0,7);
+  af.addEventListener('input', ()=>{ p.activeFrom = af.value || null; saveJSON(STORAGE_CONFIG, CONFIG); });
+  tdAf.appendChild(af);
+
+  // Archive_from
+  const tdAr = document.createElement('td');
+  const ar = document.createElement('input'); ar.type='month'; ar.value=(p.archiveFrom||'').slice(0,7);
+  ar.addEventListener('input', ()=>{ p.archiveFrom = ar.value || null; saveJSON(STORAGE_CONFIG, CONFIG); renderConfigTables(); });
+  tdAr.appendChild(ar);
+
+  tr.append(tdSr, tdNm, tdPh, tdAf, tdAr);
+
+  // Archive button (only in Active section)
+  if(isActiveSection){
+    const tdBtn = document.createElement('td'); tdBtn.className='center';
+    const ab = document.createElement('button'); ab.textContent='Archive'; ab.className='warn'; ab.title='Move to Archived (from next cycle)';
+    ab.addEventListener('click', ()=>{
+      p.archiveFrom = nextKey(CURRENT_KEY); // archive starting next cycle
+      saveJSON(STORAGE_CONFIG, CONFIG);
+      renderConfigTables();
+    });
+    tdBtn.appendChild(ab);
+    tr.appendChild(tdBtn);
+  } else {
+    // Archived table has no button column; leave as-is
+  }
+
+  return tr;
+}
+
+/* ---- Save to Web (two files) ---- */
+async function saveToWeb(){
+  if(!OWNER || !REPO || !BRANCH || !TOKEN){ alert('Fill OWNER/REPO/BRANCH/TOKEN at top.'); return; }
+  const ownerRepo = `${OWNER}/${REPO}`;
+  // STATE
+  let shaState = null;
+  try{ const j = await repoGetFile(ownerRepo, PATH_STATE, BRANCH); if(j && j.sha) shaState=j.sha; }catch{}
+  await repoPutFile(ownerRepo, PATH_STATE, BRANCH, JSON.stringify(STATE,null,2), shaState, 'Save ATT billing (state)');
+  // CONFIG
+  let shaCfg = null;
+  try{ const j2 = await repoGetFile(ownerRepo, PATH_CONFIG, BRANCH); if(j2 && j2.sha) shaCfg=j2.sha; }catch{}
+  await repoPutFile(ownerRepo, PATH_CONFIG, BRANCH, JSON.stringify(CONFIG,null,2), shaCfg, 'Save ATT billing (config)');
+  alert('Saved to web JSON ✅');
+}
+el.saveWebBtn.addEventListener('click', ()=> saveToWeb().catch(e=>alert('Save failed: '+e.message)));
+
+/* ---- Initial load from Web if present ---- */
+async function tryLoadFromWebOnce(){
+  if(!OWNER || !REPO || !BRANCH) return;
+  const ownerRepo = `${OWNER}/${REPO}`;
+  try{
+    const st = await repoGetFile(ownerRepo, PATH_STATE, BRANCH);
+    if(st?.content){
+      const s = JSON.parse(decodeURIComponent(escape(atob(st.content))));
+      if(s.version===FILE_SCHEMA_VERSION) STATE = s;
+    }
+  }catch{}
+  try{
+    const cf = await repoGetFile(ownerRepo, PATH_CONFIG, BRANCH);
+    if(cf?.content){
+      const c = JSON.parse(decodeURIComponent(escape(atob(cf.content))));
+      if(c.version===FILE_SCHEMA_VERSION) CONFIG = c;
+    }
+  }catch{}
+  // If empty config, seed with 8 placeholders like your original lines
+  if((CONFIG.people||[]).length===0){
+    CONFIG.people = Array.from({length:8},(_,i)=>({
+      sr_no:i+1, name:'', phone:'', activeFrom:keyFromDate(new Date()), archiveFrom:null
+    }));
+  }
+  // ensure current cycle exists + rows from config
+  if(!STATE.cycles[CURRENT_KEY]) STATE.cycles[CURRENT_KEY]={billAmount:0, rows:[]};
+  ensureCycleRowsFromConfig(CURRENT_KEY);
+  saveJSON(STORAGE_STATE, STATE);
+  saveJSON(STORAGE_CONFIG, CONFIG);
+}
+
+/* ---- Boot ---- */
+(async function init(){
+  await tryLoadFromWebOnce();
+  render();
+})();
+</script>
+</body>
+</html>
