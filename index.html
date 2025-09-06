@@ -399,7 +399,7 @@ function maybeShowPrompt(){
     el.billPrompt.style.display='none';
   }
 }
-el.bpClose.addEventListener('click', ()=> el.billPrompt.style.display='none'));
+el.bpClose.addEventListener('click', ()=> el.billPrompt.style.display='none');
 el.bpYes.addEventListener('click', ()=>{
   const todaysKey = keyFromDate(new Date());
   STATE.settings.lastAckCycleKey = todaysKey;
