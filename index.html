@@ -266,9 +266,14 @@ function pad(n){ return String(n).padStart(2,'0'); }
 function toISODate(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
 function isoToHuman(iso){
   if(!iso) return 'Bill date: —';
-  const d = new Date(iso+'T12:00:00');
-  return 'Bill date: ' + d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
+  const d = new Date(iso + 'T12:00:00');
+  // e.g., 12 Dec 2024
+  const day = String(d.getDate()).padStart(2,'0');
+  const mon = d.toLocaleString(undefined, { month: 'short' }); // Dec
+  const yr  = d.getFullYear();
+  return `Bill date: ${day} ${mon} ${yr}`;
 }
+
 function monthKeyFromISO(iso){
   const d = iso ? new Date(iso+'T12:00:00') : new Date();
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
