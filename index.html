@@ -4,49 +4,137 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>AT&T Billing – Main Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
-  :root{--bg:#0e1116;--card:#151a21;--muted:#9aa4b2;--text:#e6edf3;--accent:#4ea1ff;--ok:#2ecc71;--warn:#f1c40f;--danger:#e74c3c;--border:#222a33}
-  *{box-sizing:border-box} html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial}
-  .wrap{max-width:1120px;margin:0 auto;padding:22px}
-  .pill{padding:6px 10px;border-radius:999px;background:#0c121a;border:1px solid var(--border)}
-  .muted{color:var(--muted)}
+  /* Light + aesthetic + gaming (neon accent) */
+  :root{
+    --bg:#f5f7fa;
+    --bg-accent: radial-gradient(1200px 1200px at 10% -10%, rgba(155,81,224,.18), transparent 40%),
+                 radial-gradient(1000px 800px at 100% 0%, rgba(78,161,255,.16), transparent 40%),
+                 radial-gradient(900px 900px at 50% 100%, rgba(255,105,180,.10), transparent 35%);
+    --card:#ffffff;
+    --muted:#5b6472;
+    --text:#0d1117;
+    --accent:#7c3aed;   /* violet neon */
+    --accent-2:#00d4ff; /* cyan neon */
+    --ok:#16a34a;
+    --warn:#eab308;
+    --danger:#ef4444;
+    --border:#e6e9ef;
+    --shadow: 0 8px 24px rgba(17,17,26,.05), 0 2px 6px rgba(17,17,26,.04);
+    --radius: 14px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--text);
+    font:14px/1.5 "Outfit", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background: var(--bg);
+    background-image: var(--bg-accent);
+    background-attachment: fixed;
+  }
+
+  .wrap{max-width:1120px;margin:0 auto;padding:26px}
+  .pill{
+    padding:6px 10px;border-radius:999px;background:#fff;
+    border:1px solid var(--border); color:#374151;
+    box-shadow: var(--shadow);
+  }
+  .muted{color:var(--muted)} .dim{opacity:.85}
+
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .bar{
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+  }
   .spacer{flex:1}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
-  h1{font-size:18px;margin:0 0 6px}
-  h2{font-size:15px;margin:0 0 8px;color:var(--muted)}
+
+  h1{
+    font-size:20px;margin:0 0 6px;
+    letter-spacing:.2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  h2{font-size:15px;margin:0 0 10px;color:#374151}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow: var(--shadow);
+    backdrop-filter: saturate(1.2);
+  }
+
   label.small{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+
   input[type="text"],input[type="number"],input[type="month"]{
-    width:100%;background:#0e141c;border:1px solid var(--border);border-radius:10px;color:var(--text);padding:9px 10px;outline:none
+    width:100%; background:#fbfcff; border:1px solid var(--border);
+    border-radius:12px; color:var(--text); padding:10px 12px; outline:none;
+    transition: box-shadow .15s ease, border-color .15s ease, transform .06s ease;
   }
   input[type="number"]{appearance:textfield}
   input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  button{background:#0f1721;color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:10px;cursor:pointer}
-  button.primary{background:var(--accent);border-color:#3a8be0;color:#04101f}
-  button.ghost{background:transparent}
-  button.ok{background:var(--ok);border-color:#1ea85e;color:#06100c}
-  button.warn{background:var(--warn);border-color:#caa316;color:#1a1600}
-  table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-  thead th{position:sticky;top:0;background:#0f141b;border-bottom:1px solid var(--border);font-weight:600;padding:10px;text-align:left}
-  tbody td{border-bottom:1px solid var(--border);padding:8px}
+  input:focus{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(124,58,237,.15), 0 0 0 1px var(--accent) inset;
+  }
+
+  button{
+    background:#fff; color:#111827; border:1px solid var(--border);
+    padding:10px 14px; border-radius:12px; cursor:pointer;
+    box-shadow: var(--shadow);
+    transition: transform .06s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  button:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(17,17,26,.08), 0 3px 8px rgba(17,17,26,.06); }
+  button:active{ transform: translateY(0) scale(.98); }
+
+  button.primary{
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-color: transparent; color:white; font-weight:600;
+    text-shadow: 0 1px 0 rgba(0,0,0,.12);
+  }
+  button.ghost{background:rgba(255,255,255,.8)}
+  button.warn{background:#fff7e6;border-color:#fde68a;color:#9a6700}
+  button.danger{background:#fff1f2;border-color:#fecdd3;color:#b91c1c}
+
+  table{
+    width:100%; border-collapse:separate; border-spacing:0;
+    border:1px solid var(--border); border-radius:16px; overflow:hidden;
+    background:#fff;
+  }
+  thead th{
+    position:sticky; top:0; background:linear-gradient(180deg,#fafbff,#f3f6ff);
+    border-bottom:1px solid var(--border); font-weight:600; padding:12px; text-align:left;
+  }
+  tbody td{border-bottom:1px solid var(--border); padding:10px; vertical-align:middle}
   tbody tr:last-child td{border-bottom:none}
-  tbody tr:hover{background:#101720}
+  tbody tr:hover{background:#fafcff}
+
   td.center,th.center{text-align:center}
-  .num{width:120px}
+
+  /* compact money inputs, let notes breathe */
+  .money{width:92px}
   .phone{width:170px}
-  .notes{min-width:200px}
-  .totals{display:flex;gap:16px;justify-content:flex-end;margin-top:10px}
-  .totals .pill{background:#0f141b}
-  /* Modal */
-  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
-  .modal{width:min(980px,95vw);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
-  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .hidden{display:none}
-  .dim{opacity:.8}
-  .sectionTitle{font-weight:600;color:var(--muted);margin:12px 0 6px}
+  .notes{min-width:320px}
+
+  .totals{display:flex;gap:16px;justify-content:flex-end;margin-top:12px}
+  .totals .pill{background:#fff}
+
+  /* subtle neon focus ring utility for gaming vibe */
+  .neon{
+    box-shadow: 0 0 0 3px rgba(0,212,255,.15), 0 0 18px rgba(124,58,237,.24);
+    border-color: transparent !important;
+  }
+
+  /* Modal shell (config) */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(10,12,16,.35);display:none;align-items:center;justify-content:center;z-index:20;backdrop-filter: blur(3px)}
+  .modal{width:min(980px,95vw);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow: var(--shadow)}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 </style>
+
 </head>
 <body>
 <div class="wrap">
@@ -64,14 +152,11 @@
   <div class="card" style="margin-bottom:14px">
     <h2>Bill</h2>
     <label class="small">Bill Amount (for this cycle)</label>
-    <input id="billAmount" type="number" step="0.01" min="0" placeholder="0.00" />
-    <div class="row" style="margin-top:8px">
-      <span id="ackBadge" class="pill">Not confirmed yet</span>
-    </div>
+    <input id="billAmount" type="number" step="0.01" min="0" placeholder="0.00" class="money" />
   </div>
 
   <div class="card">
-    <h2 style="margin-bottom:10px">Lines (driven by Config &amp; dates)</h2>
+    <h2 style="margin-bottom:10px">Lines (from Config &amp; dates)</h2>
     <div style="overflow:auto">
       <table>
         <thead>
@@ -81,6 +166,7 @@
             <th>Name</th>
             <th>Ph_no</th>
             <th>Amount</th>
+            <th>Previous Due</th>
             <th>Balance_due</th>
             <th>Notes</th>
           </tr>
@@ -95,21 +181,6 @@
   </div>
 </div>
 
-<!-- 19th-day Prompt -->
-<div id="billPrompt" class="modal-backdrop">
-  <div class="modal" style="max-width:420px">
-    <div class="modal-header">
-      <h2 style="margin:0">AT&amp;T Bill Check</h2>
-      <button id="bpClose" class="ghost">✕</button>
-    </div>
-    <p>Has the AT&amp;T bill been generated?</p>
-    <div class="row">
-      <button id="bpYes" class="ok">Yes</button>
-      <button id="bpSnooze">Ask tomorrow</button>
-    </div>
-  </div>
-</div>
-
 <!-- Config Modal -->
 <div id="configModal" class="modal-backdrop">
   <div class="modal">
@@ -120,7 +191,7 @@
 
     <div class="row" style="margin-bottom:8px">
       <button id="cfgAdd" class="ghost">+ Add Person</button>
-      <span class="muted">Active when <b>Archive_month/year</b> is empty and cycle ≥ <b>Active_month/year</b>. “Archive” sets the archive date to the <b>next cycle</b>.</span>
+      <span class="muted">Active when <b>Archive_month/year</b> is empty and cycle ≥ <b>Active_month/year</b>. “Archive → next” sets archive to the <b>next cycle</b>.</span>
     </div>
 
     <div class="sectionTitle">Active</div>
@@ -134,6 +205,7 @@
             <th>Active_month/year</th>
             <th>Archive_month/year</th>
             <th class="center">Archive → next</th>
+            <th class="center">Delete</th>
           </tr>
         </thead>
         <tbody id="cfgActiveBody"></tbody>
@@ -150,6 +222,7 @@
             <th>Ph_No</th>
             <th>Active_month/year</th>
             <th>Archive_month/year</th>
+            <th class="center">Delete</th>
           </tr>
         </thead>
         <tbody id="cfgArchivedBody"></tbody>
@@ -164,16 +237,16 @@
 
 <script>
 /* ===== EDIT THESE for “Save to Web” (2 files) ===== */
-const OWNER       = 'coderMikhael';
-const REPO        = 'billm';
-const BRANCH      = 'main';                 // or 'main'
+const OWNER       = 'your-github-username';
+const REPO        = 'your-github-pages-repo';
+const BRANCH      = 'gh-pages';                 // or 'main'
 const PATH_STATE  = 'data/att-billing.json';    // cycles: amounts/balances/notes
 const PATH_CONFIG = 'data/att-config.json';     // central people config
-const TOKEN       = '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';
+const TOKEN       = 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 /* ================================================ */
 
-const STORAGE_STATE  = 'att.billing.state.v6';
-const STORAGE_CONFIG = 'att.billing.config.v2';
+const STORAGE_STATE  = 'att.billing.state.v10';
+const STORAGE_CONFIG = 'att.billing.config.v6';
 const FILE_SCHEMA_VERSION = 1;
 
 /* ---- Cycle helpers (10th → 9th) ---- */
@@ -190,11 +263,11 @@ function rangeFromKey(key){ const s=startFromKey(key); const e=new Date(s.getFul
 function fmtDate(dt){ return dt.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
 
 /* ---- Data shapes ----
-STATE.json  { version, settings:{lastAckCycleKey}, cycles:{ [key]: { billAmount, rows:[ {personKey, informed, amount, balance, notes} ] } } }
+STATE.json  { version, cycles:{ [key]: { billAmount, rows:[ {personKey, informed, amount, prevDue, balance, notes, _prevFromKey?} ] } } }
 CONFIG.json { version, people:[ {sr_no, name, phone, activeFrom:'YYYY-MM', archiveFrom:'YYYY-MM'|null} ] }
-personKey = phone (assumed unique)
+personKey = phone (must be unique for each person)
 -------------------------------------------------------- */
-function newState(){ return { version:FILE_SCHEMA_VERSION, settings:{ lastAckCycleKey:null }, cycles:{} }; }
+function newState(){ return { version:FILE_SCHEMA_VERSION, cycles:{} }; }
 function newConfig(){ return { version:FILE_SCHEMA_VERSION, people:[] }; }
 
 let STATE  = loadJSON(STORAGE_STATE)  || newState();
@@ -241,18 +314,12 @@ const el = {
   cycleLabel: document.getElementById('cycleLabel'),
   todayLabel: document.getElementById('todayLabel'),
   billAmount: document.getElementById('billAmount'),
-  ackBadge:   document.getElementById('ackBadge'),
   tbody:      document.getElementById('tbody'),
   totalAmount:document.getElementById('totalAmount'),
   totalDue:   document.getElementById('totalDue'),
   prevCycleBtn: document.getElementById('prevCycleBtn'),
   nextCycleBtn: document.getElementById('nextCycleBtn'),
   saveWebBtn: document.getElementById('saveWebBtn'),
-  // prompt
-  billPrompt: document.getElementById('billPrompt'),
-  bpClose:    document.getElementById('bpClose'),
-  bpYes:      document.getElementById('bpYes'),
-  bpSnooze:   document.getElementById('bpSnooze'),
   // config
   configBtn:  document.getElementById('configBtn'),
   configModal:document.getElementById('configModal'),
@@ -263,41 +330,58 @@ const el = {
   cfgSave:    document.getElementById('cfgSave'),
 };
 
-/* ---- Business rules ---- */
-// active if: (archiveFrom is null) AND (activeFrom <= key)
+/* ---- Rules ---- */
+// active if: started <= key AND (no archiveFrom OR key < archiveFrom)
 function personActiveInCycle(p, key){
   const aFrom = p.activeFrom || '0000-01';
-  const aStop = p.archiveFrom || null; // null means still active
+  const aStop = p.archiveFrom || null;
   const started = (aFrom <= key);
-  const notStopped = (aStop === null) || (key < aStop);
+  const notStopped = (aStop === null) || (key < aStop); // disappear starting archiveFrom
   return started && notStopped;
 }
 
-// Build cycle rows from config; Sr_no in table is sequential 1..N
+function prevCycleKey(key){ return prevKey(key); }
+
+/* Build cycle rows from CONFIG; keep amounts; compute prevDue default from prev cycle */
 function ensureCycleRowsFromConfig(key){
   if(!STATE.cycles[key]) STATE.cycles[key] = { billAmount:0, rows:[] };
-  const prev = Object.fromEntries((STATE.cycles[key].rows||[]).map(r=>[r.personKey, r]));
-  const activePeople = (CONFIG.people||[])
+
+  const prevMap = Object.fromEntries((STATE.cycles[key].rows||[]).map(r=>[r.personKey, r]));
+
+  const activePeopleOrdered = (CONFIG.people||[])
     .filter(p=>personActiveInCycle(p, key))
-    .sort((a,b)=>(a.sr_no||0)-(b.sr_no||0));
-  const rows = activePeople.map((p, idx)=>{
-    const pk = (p.phone||'').trim();
-    const old = prev[pk];
+    .sort((a,b)=>(Number(a.sr_no||0)-Number(b.sr_no||0)));
+
+  const rows = activePeopleOrdered.map((p)=>{
+    const pk = (p.phone||'').trim(); // PHONE is the key (make unique)
+    const existing = prevMap[pk] || {};
+    let prevDue = existing.prevDue;
+
+    const wantPrevKey = prevCycleKey(key);
+    if(prevDue === undefined || existing._prevFromKey !== wantPrevKey){
+      const prevRows = (STATE.cycles[wantPrevKey]?.rows)||[];
+      const prevRow = prevRows.find(rr => rr.personKey === pk);
+      prevDue = prevRow ? Number(prevRow.balance||0) : 0;
+    }
+
+    const amount = existing.amount ?? 0;
+    const balance = Number(amount||0) + Number(prevDue||0);
+
     return {
       personKey: pk,
-      informed: old ? !!old.informed : false,
-      amount:   old ? Number(old.amount||0)  : 0,
-      balance:  old ? Number(old.balance||0) : 0,
-      notes:    old ? (old.notes||'') : '',
-      name:     p.name||'',
-      phone:    p.phone||'',
-      sr_no:    idx+1 // sequential for table, no gaps
+      informed: !!existing.informed,
+      amount: Number(amount||0),
+      prevDue: Number(prevDue||0),
+      balance: Number(balance||0),
+      notes: existing.notes || '',
+      _prevFromKey: wantPrevKey
     };
   });
+
   STATE.cycles[key].rows = rows;
 }
 
-/* ---- Render ---- */
+/* ---- Render main ---- */
 function render(){
   const [s,e] = rangeFromKey(CURRENT_KEY);
   el.cycleLabel.textContent = `Cycle ${fmtDate(s)} – ${fmtDate(e)} (${CURRENT_KEY})`;
@@ -306,53 +390,63 @@ function render(){
   ensureCycleRowsFromConfig(CURRENT_KEY);
 
   el.billAmount.value = STATE.cycles[CURRENT_KEY].billAmount ?? 0;
-  el.ackBadge.textContent = (STATE.settings.lastAckCycleKey===CURRENT_KEY)
-    ? `Confirmed for ${CURRENT_KEY}` : `Not confirmed for ${CURRENT_KEY}`;
 
   renderRows();
   updateTotals();
-  maybeShowPrompt();
 }
 
 function renderRows(){
-  const rows = STATE.cycles[CURRENT_KEY].rows || [];
+  const cycle = STATE.cycles[CURRENT_KEY] || {rows:[]};
+  const rows = cycle.rows;
+
+  // join with CONFIG by phone
+  const byPhone = Object.create(null);
+  (CONFIG.people||[]).forEach(p=>{ byPhone[(p.phone||'').trim()] = p; });
+
   el.tbody.innerHTML = '';
-  rows.forEach((r)=>{
+  rows.forEach((r, i)=>{
+    const p = byPhone[r.personKey] || {};
     const tr = document.createElement('tr');
 
+    // Informed
     const tdInf = document.createElement('td'); tdInf.className='center';
     const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!r.informed;
     cb.addEventListener('change', ()=>{ r.informed=cb.checked; saveJSON(STORAGE_STATE, STATE); });
     tdInf.appendChild(cb);
 
-    const tdSr  = document.createElement('td'); tdSr.textContent = r.sr_no;
+    // Sr_no sequential
+    const tdSr  = document.createElement('td'); tdSr.textContent = String(i+1);
 
-    const tdNm  = document.createElement('td');
-    const nm = document.createElement('input'); nm.type='text'; nm.value=r.name||''; nm.placeholder='Full name';
-    nm.addEventListener('input', ()=>{ r.name=nm.value; saveJSON(STORAGE_STATE, STATE); });
-    tdNm.appendChild(nm);
+    // Name / Phone (read-only display)
+    const tdNm  = document.createElement('td'); tdNm.textContent = p.name || '';
+    const tdPh  = document.createElement('td'); tdPh.textContent = p.phone || r.personKey || '';
 
-    const tdPh  = document.createElement('td');
-    const ph = document.createElement('input'); ph.type='text'; ph.className='phone'; ph.value=r.phone||''; ph.placeholder='555-123-4567';
-    ph.addEventListener('input', ()=>{ r.phone=ph.value; r.personKey=(ph.value||'').trim(); saveJSON(STORAGE_STATE, STATE); });
-    tdPh.appendChild(ph);
-
+    // Amount
     const tdAmt = document.createElement('td');
-    const amt = document.createElement('input'); amt.type='number'; amt.step='0.01'; amt.min='0'; amt.className='num'; amt.value=r.amount ?? 0;
-    amt.addEventListener('input', ()=>{ r.amount=parseFloat(amt.value||'0'); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
+    const amt = document.createElement('input'); amt.type='number'; amt.step='0.01'; amt.min='0'; amt.className='money'; amt.value=r.amount ?? 0;
+    amt.addEventListener('input', ()=>{ r.amount=parseFloat(amt.value||'0'); r.balance = Number(r.amount||0)+Number(r.prevDue||0); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
     tdAmt.appendChild(amt);
 
+    // Previous Due (auto-filled; editable)
+    const tdPrev = document.createElement('td');
+    const pd = document.createElement('input'); pd.type='number'; pd.step='0.01'; pd.min='0'; pd.className='money'; pd.value=r.prevDue ?? 0;
+    pd.addEventListener('input', ()=>{ r.prevDue=parseFloat(pd.value||'0'); r.balance = Number(r.amount||0)+Number(r.prevDue||0); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
+    tdPrev.appendChild(pd);
+
+    // Balance Due (read-only; amount + prevDue)
     const tdBal = document.createElement('td');
-    const bal = document.createElement('input'); bal.type='number'; bal.step='0.01'; bal.min='0'; bal.className='num'; bal.value=r.balance ?? 0;
-    bal.addEventListener('input', ()=>{ r.balance=parseFloat(bal.value||'0'); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
+    const bal = document.createElement('input'); bal.type='number'; bal.step='0.01'; bal.min='0'; bal.className='money'; bal.value=r.balance ?? 0; bal.readOnly = true;
+    const syncBal = ()=>{ bal.value = (Number(r.amount||0)+Number(r.prevDue||0)).toFixed(2); };
+    syncBal();
     tdBal.appendChild(bal);
 
+    // Notes (wide)
     const tdNt  = document.createElement('td');
     const nt = document.createElement('input'); nt.type='text'; nt.className='notes'; nt.placeholder='Notes'; nt.value=r.notes||'';
     nt.addEventListener('input', ()=>{ r.notes=nt.value; saveJSON(STORAGE_STATE, STATE); });
     tdNt.appendChild(nt);
 
-    tr.append(tdInf, tdSr, tdNm, tdPh, tdAmt, tdBal, tdNt);
+    tr.append(tdInf, tdSr, tdNm, tdPh, tdAmt, tdPrev, tdBal, tdNt);
     el.tbody.appendChild(tr);
   });
 }
@@ -360,15 +454,16 @@ function renderRows(){
 function updateTotals(){
   const rows = STATE.cycles[CURRENT_KEY].rows || [];
   const totAmt = rows.reduce((s,r)=>s+Number(r.amount||0),0);
+  rows.forEach(r=>{ r.balance = Number(r.amount||0)+Number(r.prevDue||0); });
   const totDue = rows.reduce((s,r)=>s+Number(r.balance||0),0);
   el.totalAmount.textContent = totAmt.toFixed(2);
   el.totalDue.textContent    = totDue.toFixed(2);
 }
 
 /* ---- Events: main ---- */
-document.getElementById('billAmount').addEventListener('input', ()=>{
+el.billAmount.addEventListener('input', ()=>{
   if(!STATE.cycles[CURRENT_KEY]) STATE.cycles[CURRENT_KEY]={billAmount:0, rows:[]};
-  STATE.cycles[CURRENT_KEY].billAmount = parseFloat(document.getElementById('billAmount').value||'0');
+  STATE.cycles[CURRENT_KEY].billAmount = parseFloat(el.billAmount.value||'0');
   saveJSON(STORAGE_STATE, STATE);
 });
 el.prevCycleBtn.addEventListener('click', ()=>{
@@ -386,40 +481,10 @@ el.nextCycleBtn.addEventListener('click', ()=>{
   render();
 });
 
-/* ---- 19th-day prompt (today’s cycle only) ---- */
-let snoozeUntil = null;
-function maybeShowPrompt(){
-  const todaysKey = keyFromDate(new Date());
-  if(CURRENT_KEY !== todaysKey){ el.billPrompt.style.display='none'; return; }
-  const today = new Date();
-  if(snoozeUntil && today < snoozeUntil){ el.billPrompt.style.display='none'; return; }
-  if(today.getDate() >= 19 && STATE.settings.lastAckCycleKey !== todaysKey){
-    el.billPrompt.style.display='flex';
-  }else{
-    el.billPrompt.style.display='none';
-  }
-}
-el.bpClose.addEventListener('click', ()=> el.billPrompt.style.display='none');
-el.bpYes.addEventListener('click', ()=>{
-  const todaysKey = keyFromDate(new Date());
-  STATE.settings.lastAckCycleKey = todaysKey;
-  snoozeUntil = null;
-  saveJSON(STORAGE_STATE, STATE);
-  render();
-  el.billPrompt.style.display='none';
-});
-el.bpSnooze.addEventListener('click', ()=>{
-  const t = new Date();
-  snoozeUntil = new Date(t.getFullYear(), t.getMonth(), t.getDate()+1, 0,0,0);
-  el.billPrompt.style.display='none';
-});
-
 /* ---- Config Modal ---- */
 el.configBtn.addEventListener('click', ()=>{ renderConfigTables(); el.configModal.style.display='flex'; });
 el.cfgClose.addEventListener('click', ()=> el.configModal.style.display='none');
 el.cfgSave.addEventListener('click', ()=>{
-  // normalize sr_no sequentially across entire people list (active+archived combined order)
-  CONFIG.people.sort((a,b)=>(a.sr_no||0)-(b.sr_no||0)).forEach((p,i)=> p.sr_no = i+1);
   saveJSON(STORAGE_CONFIG, CONFIG);
   ensureCycleRowsFromConfig(CURRENT_KEY);
   saveJSON(STORAGE_STATE, STATE);
@@ -428,10 +493,10 @@ el.cfgSave.addEventListener('click', ()=>{
 });
 el.cfgAdd.addEventListener('click', ()=>{
   CONFIG.people.push({
-    sr_no:(CONFIG.people.length+1),
+    sr_no: (CONFIG.people.length+1),  // Active will render as 1..N
     name:'', phone:'',
-    activeFrom:keyFromDate(new Date()),
-    archiveFrom:null
+    activeFrom: keyFromDate(new Date()),
+    archiveFrom: null
   });
   saveJSON(STORAGE_CONFIG, CONFIG);
   renderConfigTables();
@@ -439,67 +504,102 @@ el.cfgAdd.addEventListener('click', ()=>{
 
 function renderConfigTables(){
   const active = [], archived = [];
-  (CONFIG.people||[]).forEach(p=>{
-    if(p.archiveFrom) archived.push(p); else active.push(p);
-  });
-  // Sort each by sr_no
-  active.sort((a,b)=>(a.sr_no||0)-(b.sr_no||0));
-  archived.sort((a,b)=>(a.sr_no||0)-(b.sr_no||0));
+  (CONFIG.people||[]).forEach(p => (p.archiveFrom ? archived : active).push(p));
+  active.sort((a,b)=>(Number(a.sr_no||0)-Number(b.sr_no||0)));
+
   el.cfgActiveBody.innerHTML = '';
   el.cfgArchivedBody.innerHTML = '';
 
-  active.forEach((p, idx)=> el.cfgActiveBody.appendChild(configRow(p, idx, true)));
-  archived.forEach((p, idx)=> el.cfgArchivedBody.appendChild(configRow(p, idx, false)));
-}
+  // ACTIVE: 1..N (no gaps)
+  active.forEach((p, idx)=>{
+    const tr = document.createElement('tr');
 
-function configRow(p, idx, isActiveSection){
-  const tr = document.createElement('tr');
+    const tdSr = document.createElement('td'); tdSr.textContent = String(idx+1); tr.appendChild(tdSr);
 
-  // Sr_No (display only; we renumber on save)
-  const tdSr = document.createElement('td'); tdSr.textContent = p.sr_no || (idx+1);
+    tr.appendChild(cfgTextCell(p, 'name', 'Full name'));
+    tr.appendChild(cfgTextCell(p, 'phone', '555-123-4567', 'phone'));
 
-  // Name
-  const tdNm = document.createElement('td');
-  const nm = document.createElement('input'); nm.type='text'; nm.value=p.name||''; nm.placeholder='Full name';
-  nm.addEventListener('input', ()=>{ p.name=nm.value; saveJSON(STORAGE_CONFIG, CONFIG); });
-  tdNm.appendChild(nm);
+    tr.appendChild(cfgMonthCell(p, 'activeFrom'));
+    tr.appendChild(cfgMonthCell(p, 'archiveFrom', ()=>{ renderConfigTables(); }));
 
-  // Phone
-  const tdPh = document.createElement('td');
-  const ph = document.createElement('input'); ph.type='text'; ph.className='phone'; ph.value=p.phone||''; ph.placeholder='555-123-4567';
-  ph.addEventListener('input', ()=>{ p.phone=ph.value; saveJSON(STORAGE_CONFIG, CONFIG); });
-  tdPh.appendChild(ph);
-
-  // Active_from
-  const tdAf = document.createElement('td');
-  const af = document.createElement('input'); af.type='month'; af.value=(p.activeFrom||'').slice(0,7);
-  af.addEventListener('input', ()=>{ p.activeFrom = af.value || null; saveJSON(STORAGE_CONFIG, CONFIG); });
-  tdAf.appendChild(af);
-
-  // Archive_from
-  const tdAr = document.createElement('td');
-  const ar = document.createElement('input'); ar.type='month'; ar.value=(p.archiveFrom||'').slice(0,7);
-  ar.addEventListener('input', ()=>{ p.archiveFrom = ar.value || null; saveJSON(STORAGE_CONFIG, CONFIG); renderConfigTables(); });
-  tdAr.appendChild(ar);
-
-  tr.append(tdSr, tdNm, tdPh, tdAf, tdAr);
-
-  // Archive button (only in Active section)
-  if(isActiveSection){
-    const tdBtn = document.createElement('td'); tdBtn.className='center';
-    const ab = document.createElement('button'); ab.textContent='Archive'; ab.className='warn'; ab.title='Move to Archived (from next cycle)';
+    // Archive → set next cycle
+    const tdArc = document.createElement('td'); tdArc.className='center';
+    const ab = document.createElement('button'); ab.textContent='Archive'; ab.className='warn';
+    ab.title='Move to Archived (from next cycle)';
     ab.addEventListener('click', ()=>{
-      p.archiveFrom = nextKey(CURRENT_KEY); // archive starting next cycle
+      p.archiveFrom = nextKey(CURRENT_KEY); // change to CURRENT_KEY to hide immediately
       saveJSON(STORAGE_CONFIG, CONFIG);
       renderConfigTables();
+      ensureCycleRowsFromConfig(CURRENT_KEY);
+      saveJSON(STORAGE_STATE, STATE);
+      render();
     });
-    tdBtn.appendChild(ab);
-    tr.appendChild(tdBtn);
-  } else {
-    // Archived table has no button column; leave as-is
-  }
+    tdArc.appendChild(ab);
+    tr.appendChild(tdArc);
 
-  return tr;
+    // Delete person
+    const tdDel = document.createElement('td'); tdDel.className='center';
+    const db = document.createElement('button'); db.textContent='Delete'; db.className='danger';
+    db.title='Remove from config (history stays in past cycles)';
+    db.addEventListener('click', ()=>{
+      if(confirm(`Delete ${p.name || p.phone || 'this person'} from config? This does not change past cycles.`)){
+        const i = CONFIG.people.indexOf(p);
+        if(i>=0){ CONFIG.people.splice(i,1); saveJSON(STORAGE_CONFIG, CONFIG); renderConfigTables(); ensureCycleRowsFromConfig(CURRENT_KEY); saveJSON(STORAGE_STATE, STATE); render(); }
+      }
+    });
+    tdDel.appendChild(db);
+    tr.appendChild(tdDel);
+
+    el.cfgActiveBody.appendChild(tr);
+  });
+
+  // ARCHIVED: its own 1..M numbering + delete
+  archived.forEach((p, idx)=>{
+    const tr = document.createElement('tr');
+    const tdSr = document.createElement('td'); tdSr.textContent = String(idx+1); tr.appendChild(tdSr);
+
+    tr.appendChild(cfgTextCell(p, 'name', 'Full name'));
+    tr.appendChild(cfgTextCell(p, 'phone', '555-123-4567', 'phone'));
+    tr.appendChild(cfgMonthCell(p, 'activeFrom'));
+    tr.appendChild(cfgMonthCell(p, 'archiveFrom', ()=>{ renderConfigTables(); }));
+
+    const tdDel = document.createElement('td'); tdDel.className='center';
+    const db = document.createElement('button'); db.textContent='Delete'; db.className='danger';
+    db.title='Remove from config (history stays in past cycles)';
+    db.addEventListener('click', ()=>{
+      if(confirm(`Delete ${p.name || p.phone || 'this person'} from config? This does not change past cycles.`)){
+        const i = CONFIG.people.indexOf(p);
+        if(i>=0){ CONFIG.people.splice(i,1); saveJSON(STORAGE_CONFIG, CONFIG); renderConfigTables(); ensureCycleRowsFromConfig(CURRENT_KEY); saveJSON(STORAGE_STATE, STATE); render(); }
+      }
+    });
+    tdDel.appendChild(db);
+    tr.appendChild(tdDel);
+
+    el.cfgArchivedBody.appendChild(tr);
+  });
+}
+
+// tiny inline “cells”
+function cfgTextCell(obj, key, placeholder, cls){
+  const td = document.createElement('td');
+  const inp = document.createElement('input');
+  inp.type='text'; if(cls) inp.className=cls;
+  inp.placeholder = placeholder || '';
+  inp.value = obj[key] || '';
+  inp.addEventListener('input', ()=>{ obj[key]=inp.value; saveJSON(STORAGE_CONFIG, CONFIG); });
+  td.appendChild(inp);
+  return td;
+}
+function cfgMonthCell(obj, key, onChange){
+  const td = document.createElement('td');
+  const m = document.createElement('input'); m.type='month'; m.value=(obj[key]||'').slice(0,7);
+  m.addEventListener('input', ()=>{
+    obj[key] = m.value || null;
+    saveJSON(STORAGE_CONFIG, CONFIG);
+    if(onChange) onChange();
+  });
+  td.appendChild(m);
+  return td;
 }
 
 /* ---- Save to Web (two files) ---- */
@@ -536,13 +636,7 @@ async function tryLoadFromWebOnce(){
       if(c.version===FILE_SCHEMA_VERSION) CONFIG = c;
     }
   }catch{}
-  // If empty config, seed with 8 placeholders like your original lines
-  if((CONFIG.people||[]).length===0){
-    CONFIG.people = Array.from({length:8},(_,i)=>({
-      sr_no:i+1, name:'', phone:'', activeFrom:keyFromDate(new Date()), archiveFrom:null
-    }));
-  }
-  // ensure current cycle exists + rows from config
+  if((CONFIG.people||[]).length===0){ CONFIG.people = []; }
   if(!STATE.cycles[CURRENT_KEY]) STATE.cycles[CURRENT_KEY]={billAmount:0, rows:[]};
   ensureCycleRowsFromConfig(CURRENT_KEY);
   saveJSON(STORAGE_STATE, STATE);
