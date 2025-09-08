@@ -593,10 +593,9 @@
           "informed": false,
           "amount": 73.43,
           "prevDue": 279.06,
-          "balance": -19.25999999999999,
+          "balance": 352.49,
           "notes": "344.01 (ATT refund) + 27.74 (Surya)",
-          "_manualPrev": false,
-          "payments": 371.75
+          "_manualPrev": false
         },
         {
           "personKey": "443.473.4375",
@@ -744,7 +743,7 @@
           "amount": 42.79,
           "prevDue": 507.86,
           "balance": 550.65,
-          "notes": "",
+          "notes": "Zellled on 13 Aug, ask for 36.78 extra",
           "_manualPrev": false
         },
         {
