@@ -42,7 +42,7 @@
         "name": "Supraja",
         "phone": "617.415.8580",
         "activeFrom": "2025-01",
-        "archiveFrom": "2025-08"
+        "archiveFrom": "2025-07"
       },
       {
         "sr_no": 7,
@@ -623,6 +623,85 @@
           "balance": 444.94,
           "notes": "",
           "_prevFromBillId": 6
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "billDate": "2025-07-12",
+      "billAmount": 13.45,
+      "rows": [
+        {
+          "personKey": "443.769.6070",
+          "informed": false,
+          "amount": 36.75,
+          "prevDue": 338.24,
+          "balance": 374.99,
+          "notes": "",
+          "_prevFromBillId": 7
+        },
+        {
+          "personKey": "667.216.5165",
+          "informed": false,
+          "amount": 46.8,
+          "prevDue": 391.17,
+          "balance": 437.97,
+          "notes": "",
+          "_prevFromBillId": 7
+        },
+        {
+          "personKey": "443.851.0254",
+          "informed": false,
+          "amount": 46.8,
+          "prevDue": 392.85,
+          "balance": 439.65000000000003,
+          "notes": "",
+          "_prevFromBillId": 7
+        },
+        {
+          "personKey": "856.526.2181",
+          "informed": false,
+          "amount": 48.23,
+          "prevDue": 419.62,
+          "balance": 467.85,
+          "notes": "",
+          "_prevFromBillId": 7
+        },
+        {
+          "personKey": "410.622.6479",
+          "informed": false,
+          "amount": 36.8,
+          "prevDue": 292.1,
+          "balance": 328.90000000000003,
+          "notes": "",
+          "_prevFromBillId": 7
+        },
+        {
+          "personKey": "443.473.4375",
+          "informed": false,
+          "amount": 36.75,
+          "prevDue": 245.4,
+          "balance": 282.15,
+          "notes": "",
+          "_prevFromBillId": 7
+        },
+        {
+          "personKey": "443.315.9371",
+          "informed": false,
+          "amount": 51.94,
+          "prevDue": 0,
+          "balance": 51.94,
+          "notes": "",
+          "_prevFromBillId": 7
+        },
+        {
+          "personKey": "443.851.6378",
+          "informed": false,
+          "amount": 53.99,
+          "prevDue": 444.94,
+          "balance": 498.93,
+          "notes": "",
+          "_prevFromBillId": 7
         }
       ]
     }
