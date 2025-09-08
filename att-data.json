@@ -85,50 +85,50 @@
     {
       "id": 1,
       "billDate": "2024-12-12",
-      "billAmount": 0,
+      "billAmount": 439.62,
       "rows": [
         {
           "personKey": "443.769.6070",
           "informed": false,
-          "amount": 0,
+          "amount": 83.14,
           "prevDue": 0,
-          "balance": 0,
+          "balance": 83.14,
           "notes": "",
           "_prevFromBillId": null
         },
         {
           "personKey": "667.216.5165",
           "informed": false,
-          "amount": 0,
+          "amount": 90.93,
           "prevDue": 0,
-          "balance": 0,
+          "balance": 90.93,
           "notes": "",
           "_prevFromBillId": null
         },
         {
           "personKey": "443.851.0254",
           "informed": false,
-          "amount": 0,
+          "amount": 80.56,
           "prevDue": 0,
-          "balance": 0,
+          "balance": 80.56,
           "notes": "",
           "_prevFromBillId": null
         },
         {
           "personKey": "856.526.2181",
           "informed": false,
-          "amount": 0,
+          "amount": 85.27,
           "prevDue": 0,
-          "balance": 0,
+          "balance": 85.27,
           "notes": "",
           "_prevFromBillId": null
         },
         {
           "personKey": "443.851.6378",
           "informed": false,
-          "amount": 0,
+          "amount": 99.72,
           "prevDue": 0,
-          "balance": 0,
+          "balance": 99.72,
           "notes": "",
           "_prevFromBillId": null
         }
