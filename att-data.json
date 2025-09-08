@@ -370,6 +370,85 @@
           "_prevFromBillId": 3
         }
       ]
+    },
+    {
+      "id": 5,
+      "billDate": "2025-04-12",
+      "billAmount": 363.18,
+      "rows": [
+        {
+          "personKey": "443.769.6070",
+          "informed": false,
+          "amount": 42.24,
+          "prevDue": 212.4,
+          "balance": 254.64000000000001,
+          "notes": "",
+          "_prevFromBillId": 4
+        },
+        {
+          "personKey": "667.216.5165",
+          "informed": false,
+          "amount": 46.83,
+          "prevDue": 240.64,
+          "balance": 287.46999999999997,
+          "notes": "",
+          "_prevFromBillId": 4
+        },
+        {
+          "personKey": "443.851.0254",
+          "informed": false,
+          "amount": 46.83,
+          "prevDue": 236.86,
+          "balance": 283.69,
+          "notes": "",
+          "_prevFromBillId": 4
+        },
+        {
+          "personKey": "856.526.2181",
+          "informed": false,
+          "amount": 53.42,
+          "prevDue": 249.32,
+          "balance": 302.74,
+          "notes": "",
+          "_prevFromBillId": 4
+        },
+        {
+          "personKey": "410.622.6479",
+          "informed": false,
+          "amount": 36.83,
+          "prevDue": 171.58,
+          "balance": 208.41000000000003,
+          "notes": "",
+          "_prevFromBillId": 4
+        },
+        {
+          "personKey": "617.415.8580",
+          "informed": false,
+          "amount": 46.83,
+          "prevDue": 180.39,
+          "balance": 227.21999999999997,
+          "notes": "",
+          "_prevFromBillId": 4
+        },
+        {
+          "personKey": "443.473.4375",
+          "informed": false,
+          "amount": 36.78,
+          "prevDue": 125.01,
+          "balance": 161.79000000000002,
+          "notes": "",
+          "_prevFromBillId": 4
+        },
+        {
+          "personKey": "443.851.6378",
+          "informed": false,
+          "amount": 53.42,
+          "prevDue": 274.64,
+          "balance": 328.06,
+          "notes": "",
+          "_prevFromBillId": 4
+        }
+      ]
     }
   ]
 }
