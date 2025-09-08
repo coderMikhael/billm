@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AT&T Billing – Summary (Local Only)</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fa;
+    --bg-accent: radial-gradient(1200px 1200px at 10% -10%, rgba(155,81,224,.18), transparent 40%),
+                 radial-gradient(1000px 800px at 100% 0%, rgba(78,161,255,.16), transparent 40%),
+                 radial-gradient(900px 900px at 50% 100%, rgba(255,105,180,.10), transparent 35%);
+    --card:#ffffff; --muted:#5b6472; --text:#0d1117;
+    --accent:#7c3aed; --accent-2:#00d4ff;
+    --border:#e6e9ef; --shadow:0 8px 24px rgba(17,17,26,.05), 0 2px 6px rgba(17,17,26,.04);
+
+    --green:#10b981; --yellow:#f59e0b; --red:#ef4444; --grey:#6b7280;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--text);
+    font:14px/1.5 "Outfit", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background: var(--bg); background-image: var(--bg-accent); background-attachment: fixed;
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:26px}
+  h1{
+    font-size:20px;margin:0 0 6px;letter-spacing:.2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .spacer{flex:1}
+  .pill{padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--border);color:#374151;box-shadow:var(--shadow)}
+  .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+
+  /* Filters */
+  select,button{
+    background:#fff; color:#111827; border:1px solid var(--border);
+    padding:10px 12px; border-radius:12px; box-shadow:var(--shadow);
+    cursor:pointer;
+  }
+  .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .monthList{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .chk{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);border-radius:999px;background:#fff;box-shadow:var(--shadow)}
+  .btnTiny{padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:#fff}
+
+  /* KPIs */
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  .kpi{padding:14px;border:1px solid var(--border);border-radius:14px;background:#fff;box-shadow:var(--shadow)}
+  .kpi .label{color:#6b7280;font-size:12px}
+  .kpi .value{font-size:22px;font-weight:600;margin-top:4px}
+
+  /* Progress */
+  .barH{height:12px;border-radius:999px;background:#f1f5f9;position:relative;overflow:hidden}
+  .barH > .fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,#22c55e,#60a5fa)}
+  .barRow{display:grid;grid-template-columns:120px 1fr 70px;gap:10px;align-items:center}
+  .muted{color:#6b7280}
+  .small{font-size:12px}
+
+  /* Person grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  .pCard{
+    border:1px solid var(--border); border-radius:16px; padding:12px; background:#fff; box-shadow:var(--shadow);
+    transition:transform .06s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .pCard:hover{ transform: translateY(-2px); box-shadow:0 10px 22px rgba(17,17,26,.08), 0 3px 8px rgba(17,17,26,.06); }
+  .pName{font-size:16px;font-weight:600;margin:8px 0 2px}
+  .pAmounts{font-size:14px}
+  .pMore{margin-top:8px}
+  .pToggle{background:#fff;border:1px solid var(--border);border-radius:10px;padding:6px 10px;cursor:pointer}
+  .notes{margin-top:8px;display:none}
+  .noteItem{font-size:12px;color:#374151;border-top:1px dashed #e5e7eb;padding:6px 0}
+  .noteMeta{color:#6b7280;font-size:11px;display:block;margin-bottom:2px}
+
+  /* Status colors */
+  .status-green{border-color: rgba(16,185,129,.55); box-shadow: 0 0 0 4px rgba(16,185,129,.08);}
+  .status-yellow{border-color: rgba(245,158,11,.55); box-shadow: 0 0 0 4px rgba(245,158,11,.08);}
+  .status-red{border-color: rgba(239,68,68,.55); box-shadow: 0 0 0 4px rgba(239,68,68,.08);}
+  .status-grey{border-color: rgba(107,114,128,.55); box-shadow: 0 0 0 4px rgba(107,114,128,.08);}
+  .flash{
+    animation: flash 1s linear infinite;
+  }
+  @keyframes flash {
+    0% { box-shadow: 0 0 0 3px rgba(239,68,68,.15); }
+    50%{ box-shadow: 0 0 0 6px rgba(239,68,68,.35); }
+    100%{ box-shadow: 0 0 0 3px rgba(239,68,68,.15); }
+  }
+
+  a.link{color:#374151;text-decoration:none;border:1px solid var(--border);padding:8px 12px;border-radius:12px;background:#fff;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <h1>AT&amp;T Billing – Summary</h1>
+    <span id="rangeBadge" class="pill"></span>
+    <div class="spacer"></div>
+    <a class="link" href="index.html">Open Main</a>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="filters">
+      <label class="small muted">Mode</label>
+      <select id="mode">
+        <option value="all" selected>All time</option>
+        <option value="monthly">Monthly</option>
+        <option value="pick">Select months…</option>
+      </select>
+
+      <div id="monthlyWrap" style="display:none;gap:10px;align-items:center">
+        <label class="small muted">Bill</label>
+        <select id="billSelect"></select>
+      </div>
+
+      <div id="pickWrap" style="display:none;flex-direction:column;width:100%">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button id="pickAll" class="btnTiny">Select All</button>
+          <button id="pickNone" class="btnTiny">Select None</button>
+        </div>
+        <div id="monthList" class="monthList"></div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="label">You Paid (Bill Amount)</div>
+        <div class="value" id="kpiPaid">$0.00</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Received from People</div>
+        <div class="value" id="kpiReceived">$0.00</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Outstanding</div>
+        <div class="value" id="kpiOutstanding">$0.00</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <div class="barRow">
+        <div class="muted">Total Progress</div>
+        <div class="barH"><div class="fill" id="totalFill" style="width:0%"></div></div>
+        <div class="muted" id="totalPct">0%</div>
+      </div>
+      <div class="small muted" id="totalLegend" style="margin-top:6px"></div>
+    </div>
+  </div>
+
+  <div id="emptyMsg" class="card" style="display:none">
+    <div style="font-weight:600;margin-bottom:6px">No local data found</div>
+    <div class="muted">Open <b>index.html</b> first so it saves data to this browser, then return here.</div>
+  </div>
+
+  <div id="content" style="display:none">
+    <div style="display:flex;align-items:center;gap:10px;margin:10px 0 6px">
+      <h3 style="margin:0">People</h3>
+      <span class="muted small" id="peopleCount"></span>
+    </div>
+    <div id="peopleGrid" class="grid"></div>
+  </div>
+</div>
+
+<script>
+/* Local-only Summary: reads browser localStorage, no API calls */
+const STORAGE_KEYS = ['att.billing.single.v2','att.billing.single.v1'];
+
+let DATA = null;
+let currentIndex = 0;
+
+function loadLocalData(){
+  for(const k of STORAGE_KEYS){
+    try{
+      const raw = localStorage.getItem(k);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && parsed.bills && parsed.config){ return parsed; }
+      }
+    }catch{}
+  }
+  return null;
+}
+
+/* helpers */
+function hasValue(v){ return typeof v === 'string' && v.trim() !== ''; }
+function fmt(n){ return '$' + Number(n||0).toFixed(2); }
+function isoToHuman(iso){
+  if(!iso) return '—';
+  const d = new Date(iso + 'T12:00:00');
+  const day = String(d.getDate()).padStart(2,'0');
+  const mon = d.toLocaleString(undefined, { month: 'short' });
+  const yr  = d.getFullYear();
+  return `${day} ${mon} ${yr}`;
+}
+function sum(arr, f){ let s=0; for(const x of arr) s+=f(x)||0; return s; }
+
+/* DOM refs */
+const el = {
+  rangeBadge: document.getElementById('rangeBadge'),
+  content: document.getElementById('content'),
+  emptyMsg: document.getElementById('emptyMsg'),
+
+  mode: document.getElementById('mode'),
+  billSelect: document.getElementById('billSelect'),
+  monthlyWrap: document.getElementById('monthlyWrap'),
+  pickWrap: document.getElementById('pickWrap'),
+  monthList: document.getElementById('monthList'),
+  pickAll: document.getElementById('pickAll'),
+  pickNone: document.getElementById('pickNone'),
+
+  kpiPaid: document.getElementById('kpiPaid'),
+  kpiReceived: document.getElementById('kpiReceived'),
+  kpiOutstanding: document.getElementById('kpiOutstanding'),
+  totalFill: document.getElementById('totalFill'),
+  totalPct: document.getElementById('totalPct'),
+  totalLegend: document.getElementById('totalLegend'),
+
+  peopleGrid: document.getElementById('peopleGrid'),
+  peopleCount: document.getElementById('peopleCount'),
+};
+
+/* selectors */
+function buildSelectors(){
+  // Bill dropdown (Monthly)
+  el.billSelect.innerHTML = '';
+  (DATA.bills || []).forEach((b, i)=>{
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = b.billDate || `(Bill #${b.id})`;
+    el.billSelect.appendChild(opt);
+  });
+  currentIndex = (DATA.bills?.length || 1) - 1;
+  el.billSelect.value = String(currentIndex);
+
+  // Month checklist (Select months…)
+  el.monthList.innerHTML = '';
+  (DATA.bills || []).forEach((b, i)=>{
+    const lab = document.createElement('label'); lab.className='chk';
+    const cb = document.createElement('input'); cb.type='checkbox'; cb.value=String(i);
+    const sp = document.createElement('span'); sp.textContent = b.billDate || `(Bill #${b.id})`;
+    lab.append(cb, sp);
+    el.monthList.appendChild(lab);
+  });
+}
+
+/* selection */
+function getSelectedIndexes(){
+  const mode = el.mode.value;
+  if(mode === 'monthly'){ return [Number(el.billSelect.value)]; }
+  if(mode === 'all'){ return (DATA.bills||[]).map((_,i)=>i); }
+  const picks = [...el.monthList.querySelectorAll('input[type=checkbox]:checked')].map(x=>Number(x.value));
+  return picks.sort((a,b)=>a-b);
+}
+
+/* core math (EXCLUDES first month's Amount when using first-month Balance) */
+function computeAggregates(idxs){
+  if(!idxs.length){ return null; }
+  const bills = DATA.bills;
+  const idxsAsc = [...idxs].sort((a,b)=>a-b);
+  const firstIdx = idxsAsc[0];
+  const firstBill = bills[firstIdx];
+  const firstBillDate = firstBill.billDate || '';
+
+  // people map (phone->name)
+  const nameByPhone = Object.create(null);
+  (DATA.config.people||[]).forEach(p=>{ nameByPhone[(p.phone||'').trim()] = p.name||''; });
+
+  // You paid (sum billAmount; fallback Σ amount per bill when blank)
+  let youPaid = 0;
+  for(const i of idxsAsc){
+    const b = bills[i], rows=b.rows||[];
+    const billPaid = (b.billAmount !== undefined && b.billAmount !== null && b.billAmount !== '')
+      ? Number(b.billAmount||0)
+      : sum(rows, r=>Number(r.amount||0));
+    youPaid += billPaid;
+  }
+
+  // Received from people (Σ payments across selection)
+  let received = 0;
+  for(const i of idxsAsc){
+    const b = bills[i]; received += sum(b.rows||[], r=>Number(r.payments||0));
+  }
+
+  // First-month total Balance
+  const firstRows = firstBill.rows || [];
+  const firstBalance = sum(firstRows, r=> (Number(r.amount||0)+Number(r.prevDue||0)-Number(r.payments||0)));
+
+  // Σ Amounts from months AFTER the first
+  let sumAmounts = 0;
+  for(const i of idxsAsc){
+    if(i === firstIdx) continue; // skip first selected month
+    const b = bills[i];
+    sumAmounts += sum(b.rows||[], r=>Number(r.amount||0));
+  }
+  const outstanding = firstBalance + sumAmounts;
+
+  // Progress bar target = outstanding
+  const target = outstanding;
+  const progressPct = target > 0 ? Math.max(0, Math.min(100, (received/target)*100)) : 0;
+
+  // Per-person details
+  // firstMonthBalance_person + Σ(person amounts after first month)
+  const firstByPhone = Object.create(null);
+  firstRows.forEach(r=>{
+    const k=(r.personKey||'').trim();
+    firstByPhone[k] = (Number(r.amount||0)+Number(r.prevDue||0)-Number(r.payments||0));
+  });
+
+  const per = new Map(); // phone -> {name,phone,amountSum,received,notes,invoices,firstAmount}
+  for(const i of idxsAsc){
+    const b=bills[i], bd=b.billDate || '';
+    for(const r of (b.rows||[])){
+      const phone=(r.personKey||'').trim();
+      const name = nameByPhone[phone] || '';
+      if(!per.has(phone)) per.set(phone, { name, phone, amountSum:0, received:0, notes:[], invoices:[], firstAmount:firstByPhone[phone]||0 });
+      const obj = per.get(phone);
+      obj.amountSum += Number(r.amount||0);
+      obj.received  += Number(r.payments||0);
+      obj.invoices.push({
+        billDate: bd,
+        amount: Number(r.amount||0),
+        prevDue: Number(r.prevDue||0),
+        payments: Number(r.payments||0),
+        balance: Number(r.amount||0)+Number(r.prevDue||0)-Number(r.payments||0),
+        notes: (typeof r.notes==='string'? r.notes.trim() : '')
+      });
+      if (typeof r.notes === 'string' && r.notes.trim()!==''){
+        obj.notes.push({date: bd, text: r.notes.trim()});
+      }
+    }
+  }
+
+  const people = [];
+  per.forEach(obj=>{
+    const addlAmount = (obj.invoices || [])
+      .filter(inv => (inv.billDate || '') !== firstBillDate) // exclude first
+      .reduce((s, inv) => s + Number(inv.amount || 0), 0);
+
+    const targetPerson = (obj.firstAmount || 0) + addlAmount;
+    const duePerson = targetPerson - (obj.received || 0);
+
+    people.push({
+      name: obj.name, phone: obj.phone,
+      amountSum: obj.amountSum, received: obj.received,
+      target: targetPerson, due: duePerson,
+      notes: obj.notes.sort((a,b)=>(b.date||'').localeCompare(a.date||'')),
+      invoices: obj.invoices
+    });
+  });
+
+  return { youPaid, received, outstanding, progressPct, target, people, firstIdx, idxsAsc, firstBillDate };
+}
+
+/* status color rules */
+function classifyCard(person, mode, idxsAsc){
+  const due = Number(person.due||0);
+  if (Math.abs(due - 40) < 0.0001 || Math.abs(due - 45) < 0.0001){
+    return 'status-grey';
+  }
+  if (due <= 0){
+    return 'status-green';
+  }
+
+  // Monthly: if due ≈ current month amount (± $5) then yellow
+  if (mode === 'monthly' && idxsAsc.length === 1){
+    const bIdx = idxsAsc[0];
+    const bill = DATA.bills[bIdx];
+    const row = (bill.rows||[]).find(r => (r.personKey||'').trim() === (person.phone||'').trim());
+    const currAmount = row ? Number(row.amount||0) : 0;
+    if (Math.abs(due - currAmount) <= 5){ return 'status-yellow'; }
+  }
+
+  // Heuristic months owed
+  const months = Math.max(1, person.invoices?.length || 1);
+  const totalAmt = person.invoices?.reduce((s,inv)=>s+Number(inv.amount||0),0) || 0;
+  const avgAmt = Math.max(1, totalAmt / months);
+  const monthsOwed = due / avgAmt;
+
+  // all-time due: received==0 & target>0
+  const allTimeDue = (person.received <= 0.0001 && person.target > 0.0001);
+
+  if (monthsOwed > 4 || allTimeDue){ return 'status-red flash'; }
+  if (monthsOwed > 1){ return 'status-red'; }
+  return 'status-yellow';
+}
+
+/* render */
+function render(){
+  const idxs = getSelectedIndexes();
+  if(!idxs.length){
+    el.rangeBadge.textContent = 'No months selected';
+    el.kpiPaid.textContent = '$0.00';
+    el.kpiReceived.textContent = '$0.00';
+    el.kpiOutstanding.textContent = '$0.00';
+    el.totalFill.style.width = '0%';
+    el.totalPct.textContent = '0%';
+    el.totalLegend.textContent = '';
+    el.peopleGrid.innerHTML = '';
+    el.peopleCount.textContent = '';
+    return;
+  }
+
+  // Badge
+  const mode = el.mode.value;
+  if (mode === 'all'){
+    const first = DATA.bills[idxs[0]]?.billDate, last = DATA.bills[idxs[idxs.length-1]]?.billDate;
+    el.rangeBadge.textContent = `All time: ${isoToHuman(first)} → ${isoToHuman(last)}`;
+  } else if (mode === 'monthly'){
+    const b = DATA.bills[idxs[0]];
+    el.rangeBadge.textContent = `Bill: ${b.billDate || `(Bill #${b.id})`}`;
+  } else {
+    const names = idxs.map(i=>DATA.bills[i]?.billDate || `(Bill #${DATA.bills[i]?.id})`).join(', ');
+    el.rangeBadge.textContent = `Selected: ${names}`;
+  }
+
+  // Aggregates
+  const A = computeAggregates(idxs);
+  if(!A){ return; }
+
+  // KPIs + progress
+  el.kpiPaid.textContent        = fmt(A.youPaid);
+  el.kpiReceived.textContent    = fmt(A.received);
+  el.kpiOutstanding.textContent = fmt(A.outstanding);
+  el.totalFill.style.width = A.progressPct.toFixed(1) + '%';
+  el.totalPct.textContent  = Math.round(A.progressPct) + '%';
+  el.totalLegend.textContent = `Received ${fmt(A.received)} of ${fmt(A.target)} (First-month balance + Σ Amounts after first)`;
+
+  // People cards
+  el.peopleGrid.innerHTML = '';
+  A.people.sort((x,y)=>y.due - x.due);
+  el.peopleCount.textContent = `(${A.people.length})`;
+
+  for(const person of A.people){
+    const card = document.createElement('div');
+    card.className = 'pCard ' + classifyCard(person, mode, A.idxsAsc);
+
+    // progress bar
+    const wrap = document.createElement('div'); wrap.className='barRow';
+    const lbl = document.createElement('div'); lbl.className='muted small'; lbl.textContent = 'Progress';
+    const bar = document.createElement('div'); bar.className='barH';
+    const fill = document.createElement('div'); fill.className='fill';
+    const pct = person.target > 0 ? Math.max(0, Math.min(100, (person.received/person.target)*100)) : 0;
+    fill.style.width = pct.toFixed(1)+'%';
+    bar.appendChild(fill);
+    const pctTxt = document.createElement('div'); pctTxt.className='muted small'; pctTxt.textContent = Math.round(pct)+'%';
+    wrap.append(lbl, bar, pctTxt);
+
+    // name
+    const name = document.createElement('div'); name.className='pName';
+    name.textContent = person.name || person.phone || '(Unknown)';
+
+    // x / y
+    const amounts = document.createElement('div'); amounts.className='pAmounts';
+    amounts.textContent = `${fmt(person.received)} / ${fmt(person.target)}  (due ${fmt(person.due)})`;
+
+    // notes
+    const more = document.createElement('div'); more.className='pMore';
+    const btn = document.createElement('button'); btn.className='pToggle'; btn.textContent='See more ▾';
+    const notes = document.createElement('div'); notes.className='notes';
+
+    if(person.notes.length === 0){
+      const n = document.createElement('div'); n.className='noteItem muted'; n.textContent='No notes in this range.';
+      notes.appendChild(n);
+    }else{
+      for(const n of person.notes){
+        const div = document.createElement('div'); div.className='noteItem';
+        const meta = document.createElement('span'); meta.className='noteMeta'; meta.textContent = isoToHuman(n.date);
+        const txt  = document.createElement('div'); txt.textContent = n.text;
+        div.append(meta, txt);
+        notes.appendChild(div);
+      }
+    }
+    btn.addEventListener('click', ()=>{
+      const open = notes.style.display === 'block';
+      notes.style.display = open ? 'none' : 'block';
+      btn.textContent = open ? 'See more ▾' : 'See less ▴';
+    });
+    more.append(btn, notes);
+
+    card.append(wrap, name, amounts, more);
+    el.peopleGrid.appendChild(card);
+  }
+}
+
+/* events */
+function wireEvents(){
+  el.mode.addEventListener('change', ()=>{
+    const v = el.mode.value;
+    el.monthlyWrap.style.display = (v==='monthly') ? 'flex' : 'none';
+    el.pickWrap.style.display    = (v==='pick')    ? 'flex' : 'none';
+    render();
+  });
+  el.billSelect.addEventListener('change', render);
+  el.pickAll.addEventListener('click', (e)=>{ e.preventDefault(); el.monthList.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=true); render(); });
+  el.pickNone.addEventListener('click', (e)=>{ e.preventDefault(); el.monthList.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false); render(); });
+  el.monthList.addEventListener('change', render);
+}
+
+/* boot */
+(function init(){
+  DATA = loadLocalData();
+  if(!DATA || !Array.isArray(DATA.bills) || !DATA.config){
+    el.emptyMsg.style.display = 'block';
+    return;
+  }
+  el.content.style.display = 'block';
+  buildSelectors();
+  wireEvents();
+  // default mode: all time
+  el.mode.value = 'all';
+  render();
+})();
+</script>
+</body>
+</html>
