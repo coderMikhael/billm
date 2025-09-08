@@ -124,6 +124,7 @@
             <th>Ph_no</th>
             <th>Amount</th>
             <th>Previous Due</th>
+            <th>Payments</th>
             <th>Balance_due</th>
             <th>Notes</th>
           </tr>
@@ -345,25 +346,29 @@ function ensureRowsFromConfig(idx){
   bill.rows = activePeople.map(p=>{
     const pk = (p.phone||'').trim();
     const existing = prevMap[pk] || {};
-    let prevDue = existing.prevDue;
 
-    if(prevDue === undefined || existing._prevFromBillId !== (prevBill?.id ?? null)){
-      const prevRow = prevRows.find(rr => rr.personKey === pk);
-      prevDue = prevRow ? Number(prevRow.balance||0) : 0;
-    }
-    const amount = existing.amount ?? 0;
-    const balance = Number(amount||0) + Number(prevDue||0);
+    const prevRow = prevRows.find(rr => rr.personKey === pk);
+    const prevDueFresh = prevRow ? Number(prevRow.balance||0) : 0;
+
+    // If user manually edited prev due for this row, respect it; otherwise always pull fresh
+    const manual = existing._manualPrev === true;
+    const prevDue = manual ? Number(existing.prevDue||0) : prevDueFresh;
+
+    const amount  = Number(existing.amount ?? 0);
+    const balance = amount + prevDue;
+
     return {
       personKey: pk,
       informed: !!existing.informed,
-      amount: Number(amount||0),
-      prevDue: Number(prevDue||0),
-      balance: Number(balance||0),
+      amount,
+      prevDue,
+      balance,
       notes: existing.notes || '',
-      _prevFromBillId: prevBill ? prevBill.id : null
+      _manualPrev: manual
     };
   });
 }
+
 
 /* DOM refs */
 const el = {
@@ -441,23 +446,63 @@ function renderRows(){
     const tdPrev = document.createElement('td');
     const pd = document.createElement('input'); pd.type='number'; pd.step='0.01'; pd.min='0'; pd.className='money'; pd.value=r.prevDue ?? 0;
 
+    // Payments (NEW)
+    const tdPay = document.createElement('td');
+    const pay = document.createElement('input');
+    pay.type = 'number';
+    pay.step = '0.01';
+    pay.min  = '0';
+    pay.className = 'money';
+    pay.value = r.payments ?? 0;
+
+
+      // Balance Due (read-only)
     const tdBal = document.createElement('td');
-    const bal = document.createElement('input'); bal.type='number'; bal.step='0.01'; bal.min='0'; bal.className='money'; bal.value=(r.balance ?? 0).toFixed(2); bal.readOnly = true;
+    const bal = document.createElement('input');
+    bal.type = 'number';
+    bal.step = '0.01';
+    bal.min  = '0';
+    bal.className = 'money';
+    bal.readOnly = true;
+    bal.value = (
+      Number(r.amount || 0) +
+      Number(r.prevDue || 0) -
+      Number(r.payments || 0)
+    ).toFixed(2);
+
+
 
     amt.addEventListener('input', ()=>{
-      r.amount = parseFloat(amt.value || '0');
-      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0);
+      r.amount  = parseFloat(amt.value || '0');
+      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
       bal.value = r.balance.toFixed(2);
       saveJSON(STORAGE_DATA, DATA);
       updateTotals();
     });
+
     pd.addEventListener('input', ()=>{
+      if (pd.value === '' || pd.value === null) {
+        r._manualPrev = false;
+        ensureRowsFromConfig(currentIndex);  // re-pull prevDue from last bill
+        render();                            // re-render table to reflect auto value
+        return;
+      }
       r.prevDue = parseFloat(pd.value || '0');
-      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0);
+      r._manualPrev = true;  // manual override engaged
+      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
       bal.value = r.balance.toFixed(2);
       saveJSON(STORAGE_DATA, DATA);
       updateTotals();
     });
+
+    pay.addEventListener('input', ()=>{
+      r.payments = parseFloat(pay.value || '0');
+      r.balance  = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
+      bal.value  = r.balance.toFixed(2);
+      saveJSON(STORAGE_DATA, DATA);
+      updateTotals();
+    });
+
 
     const tdNt  = document.createElement('td');
     const nt = document.createElement('input'); nt.type='text'; nt.className='notes'; nt.placeholder='Notes'; nt.value=r.notes||'';
@@ -465,21 +510,34 @@ function renderRows(){
 
     tdAmt.appendChild(amt);
     tdPrev.appendChild(pd);
+    tdPay.appendChild(pay);
     tdBal.appendChild(bal);
     tdNt.appendChild(nt);
 
-    tr.append(tdInf, tdSr, tdNm, tdPh, tdAmt, tdPrev, tdBal, tdNt);
+    tr.append(tdInf, tdSr, tdNm, tdPh, tdAmt, tdPrev, tdPay, tdBal, tdNt);
     el.tbody.appendChild(tr);
   });
 }
 
+
 function updateTotals(){
   const rows = DATA.bills[currentIndex].rows || [];
-  const totAmt = rows.reduce((s,r)=>s+Number(r.amount||0),0);
-  rows.forEach(r=>{ r.balance = Number(r.amount||0)+Number(r.prevDue||0); });
-  const totDue = rows.reduce((s,r)=>s+Number(r.balance||0),0);
+
+  const totAmt = rows.reduce((s,r)=> s + Number(r.amount   || 0), 0);
+  const totPay = rows.reduce((s,r)=> s + Number(r.payments || 0), 0);
+
+  // keep per-row balance in sync with Amount + PrevDue - Payments
+  rows.forEach(r=>{
+    r.balance = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
+  });
+
+  const totDue = rows.reduce((s,r)=> s + Number(r.balance || 0), 0);
+
   el.totalAmount.textContent = totAmt.toFixed(2);
   el.totalDue.textContent    = totDue.toFixed(2);
+
+  // If you later add a "Total Payments" pill, you'll already have totPay
+  // e.g., document.getElementById('totalPayments').textContent = totPay.toFixed(2);
 }
 
 /* Events: nav + bill gen + date modal */
