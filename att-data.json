@@ -1,7 +1,15 @@
 {
   "version": 1,
   "config": {
-    "people": []
+    "people": [
+      {
+        "sr_no": 1,
+        "name": "Surya",
+        "phone": "646161651",
+        "activeFrom": "2025-09",
+        "archiveFrom": null
+      }
+    ]
   },
   "bills": [
     {
@@ -14,7 +22,17 @@
       "id": 2,
       "billDate": null,
       "billAmount": 0,
-      "rows": []
+      "rows": [
+        {
+          "personKey": "646161651",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 0,
+          "balance": 0,
+          "notes": "",
+          "_prevFromBillId": 1
+        }
+      ]
     }
   ]
 }
