@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>AT&T Billing</title>
 
-<!-- Light + aesthetic + gaming font -->
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-  /* Light + aesthetic + gaming (neon accent) */
   :root{
     --bg:#f5f7fa;
     --bg-accent: radial-gradient(1200px 1200px at 10% -10%, rgba(155,81,224,.18), transparent 40%),
@@ -18,15 +16,14 @@
     --card:#ffffff;
     --muted:#5b6472;
     --text:#0d1117;
-    --accent:#7c3aed;   /* violet neon */
-    --accent-2:#00d4ff; /* cyan neon */
+    --accent:#7c3aed;
+    --accent-2:#00d4ff;
     --warn:#eab308;
     --danger:#ef4444;
     --border:#e6e9ef;
     --shadow: 0 8px 24px rgba(17,17,26,.05), 0 2px 6px rgba(17,17,26,.04);
     --radius: 14px;
   }
-
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -36,65 +33,38 @@
     background-image: var(--bg-accent);
     background-attachment: fixed;
   }
-
   .wrap{max-width:1120px;margin:0 auto;padding:26px}
-  .pill{
-    padding:6px 10px;border-radius:999px;background:#fff;
-    border:1px solid var(--border); color:#374151;
-    box-shadow: var(--shadow);
-  }
+  .pill{padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--border);color:#374151;box-shadow:var(--shadow)}
   .muted{color:var(--muted)} .dim{opacity:.85}
-
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .bar{
-    display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px
-  }
+  .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
   .spacer{flex:1}
-
   h1{
-    font-size:20px;margin:0 0 6px;
-    letter-spacing:.2px;
+    font-size:20px;margin:0 0 6px;letter-spacing:.2px;
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   h2{font-size:15px;margin:0 0 10px;color:#374151}
-
-  .card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:16px;
-    box-shadow: var(--shadow);
-    backdrop-filter: saturate(1.2);
-  }
-
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);backdrop-filter:saturate(1.2)}
   label.small{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
 
-  input[type="text"],input[type="number"],input[type="month"],input[type="date"]{
+  input[type="text"],input[type="number"],input[type="month"],input[type="date"],input[type="password"]{
     width:100%; background:#fbfcff; border:1px solid var(--border);
     border-radius:12px; color:var(--text); padding:10px 12px; outline:none;
     transition: box-shadow .15s ease, border-color .15s ease, transform .06s ease;
   }
   input[type="number"]{appearance:textfield}
   input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  input:focus{
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(124,58,237,.15), 0 0 0 1px var(--accent) inset;
-  }
+  input:focus{border-color: var(--accent); box-shadow: 0 0 0 4px rgba(124,58,237,.15), 0 0 0 1px var(--accent) inset;}
 
   button{
     background:#fff; color:#111827; border:1px solid var(--border);
-    padding:10px 14px; border-radius:12px; cursor:pointer;
-    box-shadow: var(--shadow);
+    padding:10px 14px; border-radius:12px; cursor:pointer; box-shadow: var(--shadow);
     transition: transform .06s ease, box-shadow .15s ease, border-color .15s ease;
   }
   button:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(17,17,26,.08), 0 3px 8px rgba(17,17,26,.06); }
   button:active{ transform: translateY(0) scale(.98); }
-  button.primary{
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    border-color: transparent; color:white; font-weight:600;
-    text-shadow: 0 1px 0 rgba(0,0,0,.12);
-  }
+  button.primary{ background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-color: transparent; color:white; font-weight:600; text-shadow: 0 1px 0 rgba(0,0,0,.12); }
   button.ghost{background:rgba(255,255,255,.8)}
   button.warn{background:#fff7e6;border-color:#fde68a;color:#9a6700}
   button.danger{background:#fff1f2;border-color:#fecdd3;color:#b91c1c}
@@ -102,29 +72,21 @@
 
   table{
     width:100%; border-collapse:separate; border-spacing:0;
-    border:1px solid var(--border); border-radius:16px; overflow:hidden;
-    background:#fff;
+    border:1px solid var(--border); border-radius:16px; overflow:hidden; background:#fff;
   }
-  thead th{
-    position:sticky; top:0; background:linear-gradient(180deg,#fafbff,#f3f6ff);
-    border-bottom:1px solid var(--border); font-weight:600; padding:12px; text-align:left;
-  }
-  tbody td{border-bottom:1px solid var(--border); padding:10px; vertical-align:middle}
-  tbody tr:last-child td{border-bottom:none}
-  tbody tr:hover{background:#fafcff}
-  td.center,th.center{text-align:center}
-
-  /* compact money inputs, let notes breathe */
+  thead th{ position:sticky; top:0; background:linear-gradient(180deg,#fafbff,#f3f6ff); border-bottom:1px solid var(--border); font-weight:600; padding:12px; text-align:left; }
+  tbody td{ border-bottom:1px solid var(--border); padding:10px; vertical-align:middle }
+  tbody tr:last-child td{ border-bottom:none }
+  tbody tr:hover{ background:#fafcff }
+  td.center,th.center{ text-align:center }
   .money{width:92px}
   .phone{width:170px}
   .notes{min-width:320px}
-
   .totals{display:flex;gap:16px;justify-content:flex-end;margin-top:12px}
   .totals .pill{background:#fff}
 
-  /* Modal */
   .modal-backdrop{position:fixed;inset:0;background:rgba(10,12,16,.35);display:none;align-items:center;justify-content:center;z-index:20;backdrop-filter: blur(3px)}
-  .modal{width:min(420px,95vw);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow: var(--shadow)}
+  .modal{width:min(480px,95vw);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow: var(--shadow)}
   .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 </style>
 </head>
@@ -134,6 +96,8 @@
     <h1>AT&amp;T Billing</h1>
     <span id="billDateBadge" class="pill"></span>
     <div class="spacer"></div>
+
+    <button id="connectBtn" class="ghost dim" title="Enter GitHub token to load/save">Connect</button>
     <button id="configBtn" class="ghost dim" title="Configure people">Config</button>
     <button id="prevBtn" class="ghost">◀ Prev</button>
     <button id="nextBtn" class="ghost">Next ▶</button>
@@ -244,36 +208,59 @@
   </div>
 </div>
 
+<!-- Connect (Token) Modal -->
+<div id="tokenModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 style="margin:0">Connect to GitHub</h2>
+      <button id="tkClose" class="ghost">✕</button>
+    </div>
+    <label class="small">Enter your GitHub Fine-Grained PAT (Contents: Read &amp; Write on your repo). Stored only for this session.</label>
+    <input id="tkInput" type="password" placeholder="ghp_... or github_pat_..." />
+    <div class="row" style="margin-top:10px;justify-content:flex-end">
+      <button id="tkSkip" class="ghost" title="Use local data only for now">Skip</button>
+      <button id="tkLoad" class="primary">Load from GitHub</button>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ===== EDIT THESE for “Save to Web” (2 files) ===== */
-const OWNER       = 'coderMikhael';
-const REPO        = 'billm';
-const BRANCH      = 'main';
-const PATH_STATE  = 'data/att-billings.json';   // bills: amounts/balances/notes + bill dates
-const PATH_CONFIG = 'data/att-billings.json';    // central people config
-const TOKEN       = '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'; // ← paste your GitHub Fine-Grained PAT locally; leave blank if you won't use "Save to Web"
-/* ================================================ */
+/* ===== One JSON on GitHub ===== */
+const OWNER     = 'coderMikhael';
+const REPO      = 'billm';
+const BRANCH    = 'data';
+const PATH_DATA = 'att-data.json';   // single file for everything
+/* ================================= */
 
-/* ---- First bill date (seed) ---- */
-const FIRST_BILL_DATE = '2024-12-12'; // your first AT&T bill date
+/* First bill seed */
+const FIRST_BILL_DATE = '2024-12-12';
 
-const STORAGE_STATE  = 'att.billing.state.v13';
-const STORAGE_CONFIG = 'att.billing.config.v9';
+/* Local storage */
+const STORAGE_DATA = 'att.billing.single.v2';
+const STORAGE_TOKEN = 'att.billing.session.token'; // sessionStorage key
 const FILE_SCHEMA_VERSION = 1;
 
-/* ---- Helpers ---- */
+/* Runtime token (session only) */
+let RUNTIME_TOKEN = '';
+
+/* Data shape & seed */
+function freshData(){
+  return { version: FILE_SCHEMA_VERSION, config:{ people: [] }, bills: [] };
+}
+let DATA = loadJSON(STORAGE_DATA) || freshData();
+let currentIndex = 0;
+
+/* Utils */
 function pad(n){ return String(n).padStart(2,'0'); }
 function toISODate(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
 function isoToHuman(iso){
   if(!iso) return 'Bill date: —';
   const d = new Date(iso + 'T12:00:00');
-  // e.g., 12 Dec 2024
   const day = String(d.getDate()).padStart(2,'0');
-  const mon = d.toLocaleString(undefined, { month: 'short' }); // Dec
+  const mon = d.toLocaleString(undefined, { month: 'short' });
   const yr  = d.getFullYear();
   return `Bill date: ${day} ${mon} ${yr}`;
 }
-
 function monthKeyFromISO(iso){
   const d = iso ? new Date(iso+'T12:00:00') : new Date();
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
@@ -284,90 +271,56 @@ function nextMonthKeyFromISO(iso){
   return `${n.getFullYear()}-${pad(n.getMonth()+1)}`;
 }
 
-/* ---- Data ----
-STATE.json {
-  version,
-  bills: [ { id, billDate:'YYYY-MM-DD'|null, billAmount, rows:[ {personKey, informed, amount, prevDue, balance, notes, _prevFromBillId?} ] } ]
-}
-CONFIG.json { version, people:[ {sr_no, name, phone, activeFrom:'YYYY-MM', archiveFrom:'YYYY-MM'|null} ] }
-personKey = phone (unique)
--------------------------------------------------------- */
-function newState(){ return { version:FILE_SCHEMA_VERSION, bills:[] }; }
-function newConfig(){ return { version:FILE_SCHEMA_VERSION, people:[] }; }
-
-let STATE  = loadJSON(STORAGE_STATE)  || newState();
-let CONFIG = loadJSON(STORAGE_CONFIG) || newConfig();
-let currentIndex = 0; // index into STATE.bills
-
-/* ---- Storage ---- */
+/* Storage */
 function loadJSON(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch{return null} }
 function saveJSON(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 
-/* ---- GitHub Contents API ---- */
+/* GitHub helpers */
+function hasValue(v){ return typeof v === 'string' && v.trim() !== ''; }
+function ghHeaders(){
+  const h = { Accept: 'application/vnd.github+json' };
+  if(hasValue(RUNTIME_TOKEN)) h.Authorization = 'Bearer ' + RUNTIME_TOKEN.trim();
+  return h;
+}
 async function repoGetFile(ownerRepo, path, branch){
-  const res = await fetch(`https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`, {
-    headers: TOKEN ? {Authorization:'Bearer '+TOKEN, Accept:'application/vnd.github+json'} : {Accept:'application/vnd.github+json'}
-  });
+  const res = await fetch(
+    `https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`,
+    { headers: ghHeaders() }
+  );
   if(res.status===404) return null;
-  if(!res.ok){ const j=await res.json().catch(()=>({})); throw new Error((j.message||'HTTP '+res.status)); }
+  if(!res.ok){ const j=await res.json().catch(()=>({})); throw new Error(j.message || ('HTTP '+res.status)); }
   return res.json();
 }
 async function repoPutFile(ownerRepo, path, branch, content, sha, message){
-  const body = { message: message || 'Save ATT billing data', content: btoa(unescape(encodeURIComponent(content))), branch };
+  const body = {
+    message: message || 'Save ATT billing data',
+    content: btoa(unescape(encodeURIComponent(content))),
+    branch
+  };
   if(sha) body.sha = sha;
-  const res = await fetch(`https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`, {
-    method:'PUT', headers:{Authorization: TOKEN?('Bearer '+TOKEN):undefined, Accept:'application/vnd.github+json'}, body: JSON.stringify(body)
-  });
-  if(!res.ok){ const j=await res.json().catch(()=>({})); throw new Error((j.message||'HTTP '+res.status)); }
+  const res = await fetch(
+    `https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`,
+    { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) }
+  );
+  if(!res.ok){ const j=await res.json().catch(()=>({})); throw new Error(j.message || ('HTTP '+res.status)); }
   return res.json();
 }
 
-/* ---- DOM ---- */
-const el = {
-  billDateBadge: document.getElementById('billDateBadge'),
-  billAmount: document.getElementById('billAmount'),
-  tbody:      document.getElementById('tbody'),
-  totalAmount:document.getElementById('totalAmount'),
-  totalDue:   document.getElementById('totalDue'),
-
-  prevBtn: document.getElementById('prevBtn'),
-  nextBtn: document.getElementById('nextBtn'),
-  billGenBtn: document.getElementById('billGenBtn'),
-  undoBtn: document.getElementById('undoBtn'),
-  saveWebBtn: document.getElementById('saveWebBtn'),
-
-  // date modal
-  dateModal: document.getElementById('dateModal'),
-  dmInput:   document.getElementById('dmInput'),
-  dmOK:      document.getElementById('dmOK'),
-  dmCancel:  document.getElementById('dmCancel'),
-  dmClose:   document.getElementById('dmClose'),
-
-  // config
-  configBtn:  document.getElementById('configBtn'),
-  configModal:document.getElementById('configModal'),
-  cfgClose:   document.getElementById('cfgClose'),
-  cfgAdd:     document.getElementById('cfgAdd'),
-  cfgActiveBody:   document.getElementById('cfgActiveBody'),
-  cfgArchivedBody: document.getElementById('cfgArchivedBody'),
-  cfgSave:    document.getElementById('cfgSave'),
-};
-
-/* ---- Rules ---- */
+/* Rules */
 function personActiveForBill(p, billISO){
-  const billKey = monthKeyFromISO(billISO); // YYYY-MM
+  const billKey = monthKeyFromISO(billISO);
   const aFrom = p.activeFrom || '0000-01';
   const aStop = p.archiveFrom || null;
   const started = (aFrom <= billKey);
-  const notStopped = (aStop === null) || (billKey < aStop); // disappear starting archiveFrom month
+  const notStopped = (aStop === null) || (billKey < aStop);
   return started && notStopped;
 }
 
-/* Ensure a bill exists by index */
+/* Ensure bill exists */
 function ensureBill(idx){
-  if(!STATE.bills[idx]){
-    const prev = STATE.bills[idx-1];
-    STATE.bills[idx] = {
+  if(!DATA.bills[idx]){
+    const prev = DATA.bills[idx-1];
+    DATA.bills[idx] = {
       id: (prev?.id || 0) + 1,
       billDate: null,
       billAmount: 0,
@@ -376,23 +329,21 @@ function ensureBill(idx){
   }
 }
 
-/* Build rows from CONFIG; compute prevDue from previous bill's balance */
+/* Build rows from config; compute prevDue from previous bill's balance */
 function ensureRowsFromConfig(idx){
-  const bill = STATE.bills[idx];
+  const bill = DATA.bills[idx];
   if(!bill.rows) bill.rows = [];
 
   const prevMap = Object.fromEntries(bill.rows.map(r=>[r.personKey, r]));
-
-  // people active for this bill (by this bill's billDate month; if not set, use today's month)
-  const activePeople = (CONFIG.people||[])
+  const activePeople = (DATA.config.people||[])
     .filter(p=>personActiveForBill(p, bill.billDate || toISODate(new Date())))
     .sort((a,b)=>(Number(a.sr_no||0)-Number(b.sr_no||0)));
 
-  const prevBill = (idx>0) ? STATE.bills[idx-1] : null;
+  const prevBill = (idx>0) ? DATA.bills[idx-1] : null;
   const prevRows = prevBill ? (prevBill.rows||[]) : [];
 
   bill.rows = activePeople.map(p=>{
-    const pk = (p.phone||'').trim(); // PHONE is the key (make unique)
+    const pk = (p.phone||'').trim();
     const existing = prevMap[pk] || {};
     let prevDue = existing.prevDue;
 
@@ -414,20 +365,48 @@ function ensureRowsFromConfig(idx){
   });
 }
 
-/* ---- Render ---- */
+/* DOM refs */
+const el = {
+  billDateBadge: document.getElementById('billDateBadge'),
+  billAmount: document.getElementById('billAmount'),
+  tbody:      document.getElementById('tbody'),
+  totalAmount:document.getElementById('totalAmount'),
+  totalDue:   document.getElementById('totalDue'),
+  prevBtn: document.getElementById('prevBtn'),
+  nextBtn: document.getElementById('nextBtn'),
+  billGenBtn: document.getElementById('billGenBtn'),
+  undoBtn: document.getElementById('undoBtn'),
+  saveWebBtn: document.getElementById('saveWebBtn'),
+  configBtn:  document.getElementById('configBtn'),
+  configModal:document.getElementById('configModal'),
+  cfgClose:   document.getElementById('cfgClose'),
+  cfgAdd:     document.getElementById('cfgAdd'),
+  cfgActiveBody:   document.getElementById('cfgActiveBody'),
+  cfgArchivedBody: document.getElementById('cfgArchivedBody'),
+  cfgSave:    document.getElementById('cfgSave'),
+  dateModal: document.getElementById('dateModal'),
+  dmInput:   document.getElementById('dmInput'),
+  dmOK:      document.getElementById('dmOK'),
+  dmCancel:  document.getElementById('dmCancel'),
+  dmClose:   document.getElementById('dmClose'),
+  connectBtn: document.getElementById('connectBtn'),
+  tokenModal: document.getElementById('tokenModal'),
+  tkInput:    document.getElementById('tkInput'),
+  tkLoad:     document.getElementById('tkLoad'),
+  tkSkip:     document.getElementById('tkSkip'),
+  tkClose:    document.getElementById('tkClose'),
+};
+
+/* Render */
 function render(){
-  const bill = STATE.bills[currentIndex];
+  const bill = DATA.bills[currentIndex];
   el.billDateBadge.textContent = isoToHuman(bill.billDate);
 
-  // controls
   el.prevBtn.disabled = (currentIndex === 0);
-  el.nextBtn.disabled = (currentIndex >= STATE.bills.length-1); // no later bill
-  // You can generate next when you're on the latest bill and (option A) you want to set next date — always allowed.
-  const onLatest = (currentIndex === STATE.bills.length-1);
+  el.nextBtn.disabled = (currentIndex >= DATA.bills.length-1);
+  const onLatest = (currentIndex === DATA.bills.length-1);
   el.billGenBtn.disabled = !onLatest;
-
-  // Undo allowed if we are on latest and there exists a previous bill (i.e., we can drop the newest bill)
-  el.undoBtn.disabled = !(onLatest && STATE.bills.length >= 2);
+  el.undoBtn.disabled = !(onLatest && DATA.bills.length >= 2);
 
   ensureRowsFromConfig(currentIndex);
   el.billAmount.value = bill.billAmount ?? 0;
@@ -437,54 +416,56 @@ function render(){
 }
 
 function renderRows(){
-  const bill = STATE.bills[currentIndex];
+  const bill = DATA.bills[currentIndex];
   const rows = bill.rows || [];
-
-  // join with CONFIG by phone
   const byPhone = Object.create(null);
-  (CONFIG.people||[]).forEach(p=>{ byPhone[(p.phone||'').trim()] = p; });
+  (DATA.config.people||[]).forEach(p=>{ byPhone[(p.phone||'').trim()] = p; });
 
   el.tbody.innerHTML = '';
   rows.forEach((r, i)=>{
     const p = byPhone[r.personKey] || {};
     const tr = document.createElement('tr');
 
-    // Informed
     const tdInf = document.createElement('td'); tdInf.className='center';
     const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!r.informed;
-    cb.addEventListener('change', ()=>{ r.informed=cb.checked; saveJSON(STORAGE_STATE, STATE); });
+    cb.addEventListener('change', ()=>{ r.informed=cb.checked; saveJSON(STORAGE_DATA, DATA); });
     tdInf.appendChild(cb);
 
-    // Sr_no sequential
     const tdSr  = document.createElement('td'); tdSr.textContent = String(i+1);
-
-    // Name / Phone
     const tdNm  = document.createElement('td'); tdNm.textContent = p.name || '';
     const tdPh  = document.createElement('td'); tdPh.textContent = p.phone || r.personKey || '';
 
-    // Amount
     const tdAmt = document.createElement('td');
     const amt = document.createElement('input'); amt.type='number'; amt.step='0.01'; amt.min='0'; amt.className='money'; amt.value=r.amount ?? 0;
-    amt.addEventListener('input', ()=>{ r.amount=parseFloat(amt.value||'0'); r.balance = Number(r.amount||0)+Number(r.prevDue||0); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
-    tdAmt.appendChild(amt);
 
-    // Previous Due
     const tdPrev = document.createElement('td');
     const pd = document.createElement('input'); pd.type='number'; pd.step='0.01'; pd.min='0'; pd.className='money'; pd.value=r.prevDue ?? 0;
-    pd.addEventListener('input', ()=>{ r.prevDue=parseFloat(pd.value||'0'); r.balance = Number(r.amount||0)+Number(r.prevDue||0); saveJSON(STORAGE_STATE, STATE); updateTotals(); });
-    tdPrev.appendChild(pd);
 
-    // Balance Due (read-only; amount + prevDue)
     const tdBal = document.createElement('td');
-    const bal = document.createElement('input'); bal.type='number'; bal.step='0.01'; bal.min='0'; bal.className='money'; bal.value=r.balance ?? 0; bal.readOnly = true;
-    const syncBal = ()=>{ bal.value = (Number(r.amount||0)+Number(r.prevDue||0)).toFixed(2); };
-    syncBal();
-    tdBal.appendChild(bal);
+    const bal = document.createElement('input'); bal.type='number'; bal.step='0.01'; bal.min='0'; bal.className='money'; bal.value=(r.balance ?? 0).toFixed(2); bal.readOnly = true;
 
-    // Notes
+    amt.addEventListener('input', ()=>{
+      r.amount = parseFloat(amt.value || '0');
+      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0);
+      bal.value = r.balance.toFixed(2);
+      saveJSON(STORAGE_DATA, DATA);
+      updateTotals();
+    });
+    pd.addEventListener('input', ()=>{
+      r.prevDue = parseFloat(pd.value || '0');
+      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0);
+      bal.value = r.balance.toFixed(2);
+      saveJSON(STORAGE_DATA, DATA);
+      updateTotals();
+    });
+
     const tdNt  = document.createElement('td');
     const nt = document.createElement('input'); nt.type='text'; nt.className='notes'; nt.placeholder='Notes'; nt.value=r.notes||'';
-    nt.addEventListener('input', ()=>{ r.notes=nt.value; saveJSON(STORAGE_STATE, STATE); });
+    nt.addEventListener('input', ()=>{ r.notes=nt.value; saveJSON(STORAGE_DATA, DATA); });
+
+    tdAmt.appendChild(amt);
+    tdPrev.appendChild(pd);
+    tdBal.appendChild(bal);
     tdNt.appendChild(nt);
 
     tr.append(tdInf, tdSr, tdNm, tdPh, tdAmt, tdPrev, tdBal, tdNt);
@@ -493,7 +474,7 @@ function renderRows(){
 }
 
 function updateTotals(){
-  const rows = STATE.bills[currentIndex].rows || [];
+  const rows = DATA.bills[currentIndex].rows || [];
   const totAmt = rows.reduce((s,r)=>s+Number(r.amount||0),0);
   rows.forEach(r=>{ r.balance = Number(r.amount||0)+Number(r.prevDue||0); });
   const totDue = rows.reduce((s,r)=>s+Number(r.balance||0),0);
@@ -501,15 +482,10 @@ function updateTotals(){
   el.totalDue.textContent    = totDue.toFixed(2);
 }
 
-/* ---- Events: top bar ---- */
-el.prevBtn.addEventListener('click', ()=>{
-  if(currentIndex>0){ currentIndex--; render(); saveJSON(STORAGE_STATE, STATE); }
-});
-el.nextBtn.addEventListener('click', ()=>{
-  if(currentIndex < STATE.bills.length-1){ currentIndex++; render(); saveJSON(STORAGE_STATE, STATE); }
-});
+/* Events: nav + bill gen + date modal */
+el.prevBtn.addEventListener('click', ()=>{ if(currentIndex>0){ currentIndex--; render(); saveJSON(STORAGE_DATA, DATA); } });
+el.nextBtn.addEventListener('click', ()=>{ if(currentIndex < DATA.bills.length-1){ currentIndex++; render(); saveJSON(STORAGE_DATA, DATA); } });
 el.billGenBtn.addEventListener('click', ()=>{
-  // Open date-picker modal; date chosen becomes NEXT bill's billDate
   const todayISO = toISODate(new Date());
   el.dmInput.value = todayISO;
   el.dateModal.style.display = 'flex';
@@ -519,150 +495,126 @@ el.dmCancel.addEventListener('click', ()=> el.dateModal.style.display='none');
 el.dmOK.addEventListener('click', ()=>{
   const chosen = el.dmInput.value;
   if(!chosen){ alert('Please pick a date.'); return; }
-
-  // Create next bill stamped with chosen date; keep current bill as-is
-  const curr = STATE.bills[currentIndex];
+  const curr = DATA.bills[currentIndex];
   const nextId = (curr?.id || 0) + 1;
-  STATE.bills.push({
-    id: nextId,
-    billDate: chosen,
-    billAmount: 0,
-    rows: []
-  });
-  currentIndex = STATE.bills.length - 1;
-
-  // Build rows (pull prevDue from previous bill)
+  DATA.bills.push({ id: nextId, billDate: chosen, billAmount: 0, rows: [] });
+  currentIndex = DATA.bills.length - 1;
   ensureRowsFromConfig(currentIndex);
-
-  saveJSON(STORAGE_STATE, STATE);
+  saveJSON(STORAGE_DATA, DATA);
   el.dateModal.style.display='none';
   render();
 });
-
 el.undoBtn.addEventListener('click', ()=>{
-  // Undo = delete the latest bill and go back
-  if(currentIndex === STATE.bills.length-1 && STATE.bills.length >= 2){
-    STATE.bills.pop();
-    currentIndex = STATE.bills.length - 1;
-    saveJSON(STORAGE_STATE, STATE);
+  if(currentIndex === DATA.bills.length-1 && DATA.bills.length >= 2){
+    DATA.bills.pop();
+    currentIndex = DATA.bills.length - 1;
+    saveJSON(STORAGE_DATA, DATA);
     render();
   }
 });
 el.billAmount.addEventListener('input', ()=>{
-  const b = STATE.bills[currentIndex];
+  const b = DATA.bills[currentIndex];
   b.billAmount = parseFloat(el.billAmount.value||'0');
-  saveJSON(STORAGE_STATE, STATE);
+  saveJSON(STORAGE_DATA, DATA);
 });
 
-/* ---- Config Modal ---- */
+/* Config modal */
 el.configBtn.addEventListener('click', ()=>{ renderConfigTables(); el.configModal.style.display='flex'; });
 el.cfgClose.addEventListener('click', ()=> el.configModal.style.display='none');
 el.cfgSave.addEventListener('click', ()=>{
-  saveJSON(STORAGE_CONFIG, CONFIG);
+  saveJSON(STORAGE_DATA, DATA);
   ensureRowsFromConfig(currentIndex);
-  saveJSON(STORAGE_STATE, STATE);
+  saveJSON(STORAGE_DATA, DATA);
   render();
   el.configModal.style.display='none';
 });
 el.cfgAdd.addEventListener('click', ()=>{
-  CONFIG.people.push({
-    sr_no: (CONFIG.people.length+1),  // Active will render as 1..N
+  DATA.config.people.push({
+    sr_no: (DATA.config.people.length+1),
     name:'', phone:'',
-    activeFrom: monthKeyFromISO(null), // current month
+    activeFrom: monthKeyFromISO(null),
     archiveFrom: null
   });
-  saveJSON(STORAGE_CONFIG, CONFIG);
+  saveJSON(STORAGE_DATA, DATA);
   renderConfigTables();
 });
 
 function renderConfigTables(){
   const active = [], archived = [];
-  (CONFIG.people||[]).forEach(p => (p.archiveFrom ? archived : active).push(p));
+  (DATA.config.people||[]).forEach(p => (p.archiveFrom ? archived : active).push(p));
   active.sort((a,b)=>(Number(a.sr_no||0)-Number(b.sr_no||0)));
 
-  const currISO = STATE.bills[currentIndex]?.billDate || toISODate(new Date());
+  const currISO = DATA.bills[currentIndex]?.billDate || toISODate(new Date());
 
-  document.getElementById('cfgActiveBody').innerHTML = '';
-  document.getElementById('cfgArchivedBody').innerHTML = '';
+  el.cfgActiveBody.innerHTML = '';
+  el.cfgArchivedBody.innerHTML = '';
 
-  // ACTIVE: 1..N (no gaps)
   active.forEach((p, idx)=>{
     const tr = document.createElement('tr');
 
     const tdSr = document.createElement('td'); tdSr.textContent = String(idx+1); tr.appendChild(tdSr);
-
     tr.appendChild(cfgTextCell(p, 'name', 'Full name'));
     tr.appendChild(cfgTextCell(p, 'phone', '555-123-4567', 'phone'));
-
     tr.appendChild(cfgMonthCell(p, 'activeFrom'));
     tr.appendChild(cfgMonthCell(p, 'archiveFrom', ()=>{ renderConfigTables(); }));
 
-    // Archive → next month relative to current bill date
     const tdArc = document.createElement('td'); tdArc.className='center';
     const ab = document.createElement('button'); ab.textContent='Archive'; ab.className='warn';
     ab.title='Move to Archived (from next month of current bill date)';
     ab.addEventListener('click', ()=>{
       p.archiveFrom = nextMonthKeyFromISO(currISO);
-      saveJSON(STORAGE_CONFIG, CONFIG);
+      saveJSON(STORAGE_DATA, DATA);
       renderConfigTables();
       ensureRowsFromConfig(currentIndex);
-      saveJSON(STORAGE_STATE, STATE);
+      saveJSON(STORAGE_DATA, DATA);
       render();
     });
-    tdArc.appendChild(ab);
-    tr.appendChild(tdArc);
+    tdArc.appendChild(ab); tr.appendChild(tdArc);
 
-    // Delete
     const tdDel = document.createElement('td'); tdDel.className='center';
     const db = document.createElement('button'); db.textContent='Delete'; db.className='danger';
     db.title='Remove from config (history stays in past bills)';
     db.addEventListener('click', ()=>{
       if(confirm(`Delete ${p.name || p.phone || 'this person'} from config? This does not change past bills.`)){
-        const i = CONFIG.people.indexOf(p);
-        if(i>=0){ CONFIG.people.splice(i,1); saveJSON(STORAGE_CONFIG, CONFIG); renderConfigTables(); ensureRowsFromConfig(currentIndex); saveJSON(STORAGE_STATE, STATE); render(); }
+        const i = DATA.config.people.indexOf(p);
+        if(i>=0){ DATA.config.people.splice(i,1); saveJSON(STORAGE_DATA, DATA); renderConfigTables(); ensureRowsFromConfig(currentIndex); saveJSON(STORAGE_DATA, DATA); render(); }
       }
     });
-    tdDel.appendChild(db);
-    tr.appendChild(tdDel);
+    tdDel.appendChild(db); tr.appendChild(tdDel);
 
-    document.getElementById('cfgActiveBody').appendChild(tr);
+    el.cfgActiveBody.appendChild(tr);
   });
 
-  // ARCHIVED
   archived.forEach((p, idx)=>{
     const tr = document.createElement('tr');
     const tdSr = document.createElement('td'); tdSr.textContent = String(idx+1); tr.appendChild(tdSr);
-
     tr.appendChild(cfgTextCell(p, 'name', 'Full name'));
     tr.appendChild(cfgTextCell(p, 'phone', '555-123-4567', 'phone'));
     tr.appendChild(cfgMonthCell(p, 'activeFrom'));
     tr.appendChild(cfgMonthCell(p, 'archiveFrom', ()=>{ renderConfigTables(); }));
 
-    // Delete
     const tdDel = document.createElement('td'); tdDel.className='center';
     const db = document.createElement('button'); db.textContent='Delete'; db.className='danger';
     db.title='Remove from config (history stays in past bills)';
     db.addEventListener('click', ()=>{
       if(confirm(`Delete ${p.name || p.phone || 'this person'} from config? This does not change past bills.`)){
-        const i = CONFIG.people.indexOf(p);
-        if(i>=0){ CONFIG.people.splice(i,1); saveJSON(STORAGE_CONFIG, CONFIG); renderConfigTables(); ensureRowsFromConfig(currentIndex); saveJSON(STORAGE_STATE, STATE); render(); }
+        const i = DATA.config.people.indexOf(p);
+        if(i>=0){ DATA.config.people.splice(i,1); saveJSON(STORAGE_DATA, DATA); renderConfigTables(); ensureRowsFromConfig(currentIndex); saveJSON(STORAGE_DATA, DATA); render(); }
       }
     });
-    tdDel.appendChild(db);
-    tr.appendChild(tdDel);
+    tdDel.appendChild(db); tr.appendChild(tdDel);
 
-    document.getElementById('cfgArchivedBody').appendChild(tr);
+    el.cfgArchivedBody.appendChild(tr);
   });
 }
 
-// cells
 function cfgTextCell(obj, key, placeholder, cls){
   const td = document.createElement('td');
   const inp = document.createElement('input');
   inp.type='text'; if(cls) inp.className=cls;
   inp.placeholder = placeholder || '';
   inp.value = obj[key] || '';
-  inp.addEventListener('input', ()=>{ obj[key]=inp.value; saveJSON(STORAGE_CONFIG, CONFIG); });
+  inp.addEventListener('input', ()=>{ obj[key]=inp.value; saveJSON(STORAGE_DATA, DATA); });
   td.appendChild(inp);
   return td;
 }
@@ -671,68 +623,111 @@ function cfgMonthCell(obj, key, onChange){
   const m = document.createElement('input'); m.type='month'; m.value=(obj[key]||'').slice(0,7);
   m.addEventListener('input', ()=>{
     obj[key] = m.value || null;
-    saveJSON(STORAGE_CONFIG, CONFIG);
+    saveJSON(STORAGE_DATA, DATA);
     if(onChange) onChange();
   });
   td.appendChild(m);
   return td;
 }
 
-/* ---- Save to Web (two files) ---- */
+/* Save to Web (single file) */
 async function saveToWeb(){
-  if(!OWNER || !REPO || !BRANCH || !TOKEN){ alert('Fill OWNER/REPO/BRANCH/TOKEN at top.'); return; }
-  const ownerRepo = `${OWNER}/${REPO}`;
-  // STATE
-  let shaState = null;
-  try{ const j = await repoGetFile(ownerRepo, PATH_STATE, BRANCH); if(j && j.sha) shaState=j.sha; }catch{}
-  await repoPutFile(ownerRepo, PATH_STATE, BRANCH, JSON.stringify(STATE,null,2), shaState, 'Save ATT billing (state)');
-  // CONFIG
-  let shaCfg = null;
-  try{ const j2 = await repoGetFile(ownerRepo, PATH_CONFIG, BRANCH); if(j2 && j2.sha) shaCfg=j2.sha; }catch{}
-  await repoPutFile(ownerRepo, PATH_CONFIG, BRANCH, JSON.stringify(CONFIG,null,2), shaCfg, 'Save ATT billing (config)');
-  alert('Saved to web JSON ✅');
-}
-document.getElementById('saveWebBtn').addEventListener('click', ()=> saveToWeb().catch(e=>alert('Save failed: '+e.message)));
+  if(!hasValue(RUNTIME_TOKEN)){ alert('Enter token via Connect → Load from GitHub first.'); return; }
+  const ownerRepo = `${OWNER.trim()}/${REPO.trim()}`;
 
-/* ---- Boot & initial seed ---- */
-async function tryLoadFromWebOnce(){
-  const ownerRepo = (OWNER&&REPO) ? `${OWNER}/${REPO}` : null;
-  if(ownerRepo){
-    try{
-      const st = await repoGetFile(ownerRepo, PATH_STATE, BRANCH);
-      if(st?.content){
-        const s = JSON.parse(decodeURIComponent(escape(atob(st.content))));
-        if(s.version===FILE_SCHEMA_VERSION) STATE = s;
-      }
-    }catch{}
-    try{
-      const cf = await repoGetFile(ownerRepo, PATH_CONFIG, BRANCH);
-      if(cf?.content){
-        const c = JSON.parse(decodeURIComponent(escape(atob(cf.content))));
-        if(c.version===FILE_SCHEMA_VERSION) CONFIG = c;
-      }
-    }catch{}
+  try{
+    let sha = null;
+    const meta = await repoGetFile(ownerRepo, PATH_DATA, BRANCH.trim()).catch(()=>null);
+    if(meta && meta.sha) sha = meta.sha;
+
+    await repoPutFile(ownerRepo, PATH_DATA, BRANCH.trim(), JSON.stringify(DATA,null,2), sha, 'Save ATT billing (single file)');
+    alert('Saved to web JSON ✅');
+  }catch(err){
+    const msg = String(err && err.message || err);
+    if(/Bad credentials|401/.test(msg)){
+      alert('GitHub auth failed (401). Check token value/permissions.');
+    }else if(/Repository access blocked|404 Not Found|Not Found/.test(msg)){
+      alert('Repo/path not found or no access. Verify OWNER/REPO/BRANCH and file path.');
+    }else{
+      alert('Save failed: ' + msg);
+    }
   }
+}
+el.saveWebBtn.addEventListener('click', ()=> saveToWeb().catch(e=>alert('Save failed: '+e.message)));
 
-  if(!STATE.bills || STATE.bills.length===0){
-    STATE.bills = [
-      { id: 1, billDate: FIRST_BILL_DATE, billAmount: 0, rows: [] }, // first bill stamped
-      { id: 2, billDate: null, billAmount: 0, rows: [] }             // a blank next bill to start with
+/* Connect modal logic */
+function openTokenModal(){ el.tokenModal.style.display='flex'; el.tkInput.focus(); }
+function closeTokenModal(){ el.tokenModal.style.display='none'; }
+
+el.connectBtn.addEventListener('click', openTokenModal);
+el.tkClose.addEventListener('click', closeTokenModal);
+el.tkSkip.addEventListener('click', closeTokenModal);
+el.tkLoad.addEventListener('click', async ()=>{
+  const tk = (el.tkInput.value || '').trim();
+  if(!hasValue(tk)){ alert('Please paste a GitHub token.'); return; }
+  RUNTIME_TOKEN = tk;
+  try{ sessionStorage.setItem(STORAGE_TOKEN, RUNTIME_TOKEN); }catch{}
+  try{
+    await loadFromWebOnce();   // fetch DATA using this token
+    render();
+    alert('Loaded from GitHub ✅');
+    closeTokenModal();
+  }catch(err){
+    const msg = String(err && err.message || err);
+    if(/Bad credentials|401/.test(msg)){
+      alert('GitHub auth failed (401). Check token value/permissions.');
+    }else if(/404 Not Found|Not Found/.test(msg)){
+      // No file yet: keep local seed; saving will create the file.
+      alert('No data file found in repo yet. You can Save to Web to create it.');
+      closeTokenModal();
+    }else{
+      alert('Load failed: ' + msg);
+    }
+  }
+});
+
+/* Boot: show token modal, seed local, allow manual load */
+async function loadFromWebOnce(){
+  const ownerRepo = `${OWNER}/${REPO}`;
+  const meta = await repoGetFile(ownerRepo, PATH_DATA, BRANCH);
+  if(meta?.content){
+    const parsed = JSON.parse(decodeURIComponent(escape(atob(meta.content))));
+    if(parsed && typeof parsed === 'object') DATA = parsed;
+  }
+  if(!DATA.version) DATA.version = FILE_SCHEMA_VERSION;
+  if(!DATA.config || !Array.isArray(DATA.config.people)) DATA.config = { people: [] };
+  if(!Array.isArray(DATA.bills) || DATA.bills.length===0){
+    DATA.bills = [
+      { id: 1, billDate: FIRST_BILL_DATE, billAmount: 0, rows: [] },
+      { id: 2, billDate: null,           billAmount: 0, rows: [] }
     ];
   }
-  currentIndex = STATE.bills.length-1; // show latest
-
-  // ensure rows exist for current
+  currentIndex = DATA.bills.length-1;
   ensureRowsFromConfig(currentIndex);
-  saveJSON(STORAGE_STATE, STATE);
-  if(!CONFIG.people) CONFIG.people = [];
-  saveJSON(STORAGE_CONFIG, CONFIG);
+  saveJSON(STORAGE_DATA, DATA);
 }
 
-/* ---- Start ---- */
 (async function init(){
-  await tryLoadFromWebOnce();
+  // Restore session token if present (but don't auto-load; user must click Load)
+  try{
+    const stored = sessionStorage.getItem(STORAGE_TOKEN);
+    if(hasValue(stored)){ RUNTIME_TOKEN = stored; el.tkInput.value = stored; }
+  }catch{}
+  // Seed local if empty
+  if(!DATA.version || !Array.isArray(DATA.bills) || DATA.bills.length===0){
+    DATA = freshData();
+    DATA.bills = [
+      { id: 1, billDate: FIRST_BILL_DATE, billAmount: 0, rows: [] },
+      { id: 2, billDate: null,           billAmount: 0, rows: [] }
+    ];
+    saveJSON(STORAGE_DATA, DATA);
+  }
+  currentIndex = DATA.bills.length-1;
+  ensureRowsFromConfig(currentIndex);
   render();
+
+  // Prompt for token at startup
+  openTokenModal();
 })();
 </script>
 </body>
