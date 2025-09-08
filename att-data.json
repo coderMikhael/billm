@@ -593,9 +593,10 @@
           "informed": false,
           "amount": 73.43,
           "prevDue": 279.06,
-          "balance": 352.49,
-          "notes": "",
-          "_manualPrev": false
+          "balance": -19.25999999999999,
+          "notes": "344.01 (ATT refund) + 27.74 (Surya)",
+          "_manualPrev": false,
+          "payments": 371.75
         },
         {
           "personKey": "443.473.4375",
