@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "bills": [
+    { "id": 1, "billDate": "2024-12-12", "billAmount": 0, "rows": [] },
+    { "id": 2, "billDate": null,        "billAmount": 0, "rows": [] }
+  ]
+}
