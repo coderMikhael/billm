@@ -741,8 +741,8 @@
           "informed": false,
           "amount": 36.75,
           "prevDue": 245.37,
-          "payments": 282.14,
-          "balance": -0.01999999999998181,
+          "payments": 282.15,
+          "balance": -0.029999999999972715,
           "notes": "Deducted from Zelle owe",
           "_manualPrev": false
         },
