@@ -697,9 +697,9 @@
         {
           "personKey": "443.851.6378",
           "informed": false,
-          "amount": 53.99,
+          "amount": 53.39,
           "prevDue": 444.94,
-          "balance": 498.93,
+          "balance": 498.33,
           "notes": "",
           "_prevFromBillId": 7
         }
