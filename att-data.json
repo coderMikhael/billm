@@ -133,6 +133,85 @@
           "_prevFromBillId": null
         }
       ]
+    },
+    {
+      "id": 2,
+      "billDate": "2025-01-12",
+      "billAmount": 0,
+      "rows": [
+        {
+          "personKey": "443.769.6070",
+          "informed": false,
+          "amount": 55.7,
+          "prevDue": 83.14,
+          "balance": 138.84,
+          "notes": "",
+          "_prevFromBillId": 1
+        },
+        {
+          "personKey": "667.216.5165",
+          "informed": false,
+          "amount": 56.05,
+          "prevDue": 90.93,
+          "balance": 146.98000000000002,
+          "notes": "",
+          "_prevFromBillId": 1
+        },
+        {
+          "personKey": "443.851.0254",
+          "informed": false,
+          "amount": 62.64,
+          "prevDue": 80.56,
+          "balance": 143.2,
+          "notes": "",
+          "_prevFromBillId": 1
+        },
+        {
+          "personKey": "856.526.2181",
+          "informed": false,
+          "amount": 57.16,
+          "prevDue": 85.27,
+          "balance": 142.43,
+          "notes": "",
+          "_prevFromBillId": 1
+        },
+        {
+          "personKey": "410.622.6479",
+          "informed": false,
+          "amount": 97.93,
+          "prevDue": 0,
+          "balance": 97.93,
+          "notes": "",
+          "_prevFromBillId": 1
+        },
+        {
+          "personKey": "617.415.8580",
+          "informed": false,
+          "amount": 86.73,
+          "prevDue": 0,
+          "balance": 86.73,
+          "notes": "",
+          "_prevFromBillId": 1
+        },
+        {
+          "personKey": "443.473.4375",
+          "informed": false,
+          "amount": 51.45,
+          "prevDue": 0,
+          "balance": 51.45,
+          "notes": "",
+          "_prevFromBillId": 1
+        },
+        {
+          "personKey": "443.851.6378",
+          "informed": false,
+          "amount": 62.64,
+          "prevDue": 99.72,
+          "balance": 162.36,
+          "notes": "",
+          "_prevFromBillId": 1
+        }
+      ]
     }
   ]
 }
