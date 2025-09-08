@@ -818,9 +818,9 @@
           "informed": false,
           "amount": 36.8,
           "prevDue": 293.93,
-          "payments": 0,
-          "balance": 330.73,
-          "notes": "",
+          "payments": 25,
+          "balance": 305.73,
+          "notes": "Refund used - 25/369.81 (344.81 remaining)",
           "_manualPrev": false
         },
         {
