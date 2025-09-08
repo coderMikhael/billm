@@ -291,6 +291,85 @@
           "_prevFromBillId": 2
         }
       ]
+    },
+    {
+      "id": 4,
+      "billDate": "2025-03-12",
+      "billAmount": 335.39,
+      "rows": [
+        {
+          "personKey": "443.769.6070",
+          "informed": false,
+          "amount": 36.78,
+          "prevDue": 175.62,
+          "balance": 212.4,
+          "notes": "",
+          "_prevFromBillId": 3
+        },
+        {
+          "personKey": "667.216.5165",
+          "informed": false,
+          "amount": 46.83,
+          "prevDue": 193.81,
+          "balance": 240.64,
+          "notes": "",
+          "_prevFromBillId": 3
+        },
+        {
+          "personKey": "443.851.0254",
+          "informed": false,
+          "amount": 19.05,
+          "prevDue": 217.81,
+          "balance": 236.86,
+          "notes": "",
+          "_prevFromBillId": 3
+        },
+        {
+          "personKey": "856.526.2181",
+          "informed": false,
+          "amount": 53.42,
+          "prevDue": 195.91,
+          "balance": 249.32999999999998,
+          "notes": "",
+          "_prevFromBillId": 3
+        },
+        {
+          "personKey": "410.622.6479",
+          "informed": false,
+          "amount": 36.83,
+          "prevDue": 134.76,
+          "balance": 171.58999999999997,
+          "notes": "",
+          "_prevFromBillId": 3
+        },
+        {
+          "personKey": "617.415.8580",
+          "informed": false,
+          "amount": 46.83,
+          "prevDue": 133.56,
+          "balance": 180.39,
+          "notes": "",
+          "_prevFromBillId": 3
+        },
+        {
+          "personKey": "443.473.4375",
+          "informed": false,
+          "amount": 36.78,
+          "prevDue": 88.23,
+          "balance": 125.01,
+          "notes": "",
+          "_prevFromBillId": 3
+        },
+        {
+          "personKey": "443.851.6378",
+          "informed": false,
+          "amount": 58.87,
+          "prevDue": 215.78000000000003,
+          "balance": 274.65000000000003,
+          "notes": "",
+          "_prevFromBillId": 3
+        }
+      ]
     }
   ]
 }
