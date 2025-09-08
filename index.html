@@ -1,795 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AT&T Billing</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-  :root{
-    --bg:#f5f7fa;
-    --bg-accent: radial-gradient(1200px 1200px at 10% -10%, rgba(155,81,224,.18), transparent 40%),
-                 radial-gradient(1000px 800px at 100% 0%, rgba(78,161,255,.16), transparent 40%),
-                 radial-gradient(900px 900px at 50% 100%, rgba(255,105,180,.10), transparent 35%);
-    --card:#ffffff;
-    --muted:#5b6472;
-    --text:#0d1117;
-    --accent:#7c3aed;
-    --accent-2:#00d4ff;
-    --warn:#eab308;
-    --danger:#ef4444;
-    --border:#e6e9ef;
-    --shadow: 0 8px 24px rgba(17,17,26,.05), 0 2px 6px rgba(17,17,26,.04);
-    --radius: 14px;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; color:var(--text);
-    font:14px/1.5 "Outfit", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    background: var(--bg);
-    background-image: var(--bg-accent);
-    background-attachment: fixed;
-  }
-  .wrap{max-width:1120px;margin:0 auto;padding:26px}
-  .pill{padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--border);color:#374151;box-shadow:var(--shadow)}
-  .muted{color:var(--muted)} .dim{opacity:.85}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-  .spacer{flex:1}
-  h1{
-    font-size:20px;margin:0 0 6px;letter-spacing:.2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  h2{font-size:15px;margin:0 0 10px;color:#374151}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);backdrop-filter:saturate(1.2)}
-  label.small{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-
-  input[type="text"],input[type="number"],input[type="month"],input[type="date"],input[type="password"]{
-    width:100%; background:#fbfcff; border:1px solid var(--border);
-    border-radius:12px; color:var(--text); padding:10px 12px; outline:none;
-    transition: box-shadow .15s ease, border-color .15s ease, transform .06s ease;
-  }
-  input[type="number"]{appearance:textfield}
-  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  input:focus{border-color: var(--accent); box-shadow: 0 0 0 4px rgba(124,58,237,.15), 0 0 0 1px var(--accent) inset;}
-
-  button{
-    background:#fff; color:#111827; border:1px solid var(--border);
-    padding:10px 14px; border-radius:12px; cursor:pointer; box-shadow: var(--shadow);
-    transition: transform .06s ease, box-shadow .15s ease, border-color .15s ease;
-  }
-  button:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(17,17,26,.08), 0 3px 8px rgba(17,17,26,.06); }
-  button:active{ transform: translateY(0) scale(.98); }
-  button.primary{ background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-color: transparent; color:white; font-weight:600; text-shadow: 0 1px 0 rgba(0,0,0,.12); }
-  button.ghost{background:rgba(255,255,255,.8)}
-  button.warn{background:#fff7e6;border-color:#fde68a;color:#9a6700}
-  button.danger{background:#fff1f2;border-color:#fecdd3;color:#b91c1c}
-  button:disabled{opacity:.6; cursor:not-allowed}
-
-  table{
-    width:100%; border-collapse:separate; border-spacing:0;
-    border:1px solid var(--border); border-radius:16px; overflow:hidden; background:#fff;
-  }
-  thead th{ position:sticky; top:0; background:linear-gradient(180deg,#fafbff,#f3f6ff); border-bottom:1px solid var(--border); font-weight:600; padding:12px; text-align:left; }
-  tbody td{ border-bottom:1px solid var(--border); padding:10px; vertical-align:middle }
-  tbody tr:last-child td{ border-bottom:none }
-  tbody tr:hover{ background:#fafcff }
-  td.center,th.center{ text-align:center }
-  .money{width:92px}
-  .phone{width:170px}
-  .notes{min-width:320px}
-  .totals{display:flex;gap:16px;justify-content:flex-end;margin-top:12px}
-  .totals .pill{background:#fff}
-
-  .modal-backdrop{position:fixed;inset:0;background:rgba(10,12,16,.35);display:none;align-items:center;justify-content:center;z-index:20;backdrop-filter: blur(3px)}
-  .modal{width:min(480px,95vw);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow: var(--shadow)}
-  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-</style>
+  <meta charset="UTF-8" />
+  <title>Secure Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#0b0f16; --card:#121826; --muted:#94a3b8; --text:#e2e8f0;
+      --accent:#60a5fa; --success:#22c55e; --error:#ef4444; --radius:16px;
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 800px at 20% -10%, #0e1626 0%, var(--bg) 60%),
+                  radial-gradient(1000px 600px at 120% 110%, #0e1626 0%, var(--bg) 60%);
+      color:var(--text); display:grid; place-items:center; padding:24px;
+    }
+    .card{
+      width:100%; max-width:420px; background:var(--card);
+      border:1px solid rgba(148,163,184,.15); border-radius:var(--radius);
+      box-shadow:0 15px 50px rgba(0,0,0,.35); padding:24px;
+    }
+    .field{ display:flex; align-items:stretch; gap:8px; }
+    .input-wrap{ position:relative; flex:1; }
+    input[type="password"], input[type="text"]{
+      width:100%; padding:12px 44px 12px 12px; background:#0c1321;
+      border:1px solid rgba(148,163,184,.25); border-radius:12px; color:var(--text);
+      font-size:1rem; outline:none; transition:border .15s ease, box-shadow .15s ease;
+    }
+    input:focus{ box-shadow:0 0 0 3px rgba(96,165,250,.25); border-color:rgba(96,165,250,.7) }
+    .icon-btn{
+      position:absolute; right:6px; top:50%; transform:translateY(-50%);
+      padding:6px 8px; border:0; background:transparent; color:var(--muted);
+      cursor:pointer; border-radius:8px;
+    }
+    .btn{
+      appearance:none; border:0; cursor:pointer; padding:12px 16px; border-radius:12px;
+      font-weight:700; background:linear-gradient(180deg,#5aa3ff,#3b82f6); color:#fff;
+      min-width:120px; box-shadow:0 8px 20px rgba(59,130,246,.35);
+    }
+    .status{ height:22px; display:flex; align-items:center; gap:8px; margin-top:10px; font-weight:600 }
+    .dot{width:9px;height:9px;border-radius:50%}
+    .ok .dot{background:var(--success)} .fail .dot{background:var(--error)}
+    .shake{ animation:shake .3s linear }
+    @keyframes shake{
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)}
+      40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}
+    }
+    /* Modal */
+    .modal-backdrop{
+      position:fixed; inset:0; background:rgba(0,0,0,.55); display:none;
+      align-items:center; justify-content:center; padding:24px; z-index:50;
+    }
+    .modal{
+      width:100%; max-width:460px; background:#0e1524;
+      border:1px solid rgba(148,163,184,.2); border-radius:16px; padding:20px;
+      box-shadow:0 20px 60px rgba(0,0,0,.5); transform:translateY(8px); opacity:0;
+      transition:opacity .18s ease, transform .18s ease;
+    }
+    .modal.show{ transform:translateY(0); opacity:1 }
+    .options{ display:flex; gap:12px; margin-top:4px; flex-wrap:wrap }
+    .opt{
+      flex:1 1 180px; display:block; text-decoration:none; color:inherit;
+      border:1px solid rgba(148,163,184,.25); border-radius:14px; padding:14px; background:#0b1220;
+      transition:border .15s ease, transform .06s ease, box-shadow .15s ease;
+    }
+    .opt:hover{ border-color:rgba(96,165,250,.7); box-shadow:0 8px 24px rgba(59,130,246,.2) }
+    .opt h4{ margin:0 0 6px 0; font-size:1.05rem } .opt p{ margin:0; color:#94a3b8; font-size:.9rem }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="bar">
-    <h1>AT&amp;T Billing</h1>
-    <span id="billDateBadge" class="pill"></span>
-    <div class="spacer"></div>
-
-    <h1><a href="summary.html" class="ghost dim" title="View dashboard/summary">Summary</a></h1>
-
-
-    <button id="connectBtn" class="ghost dim" title="Enter GitHub token to load/save">Connect</button>
-    <button id="configBtn" class="ghost dim" title="Configure people">Config</button>
-    <button id="prevBtn" class="ghost">◀ Prev</button>
-    <button id="nextBtn" class="ghost">Next ▶</button>
-    <button id="billGenBtn" class="primary" title="Pick next bill date and create next bill">Bill generated</button>
-    <button id="undoBtn" class="ghost" title="Undo last bill generation">Undo</button>
-    <button id="saveWebBtn" class="primary">Save to Web</button>
-  </div>
-
-  <div class="card" style="margin-bottom:14px">
-    <h2>Bill</h2>
-    <label class="small">Bill Amount (for this bill)</label>
-    <input id="billAmount" type="number" step="0.01" min="0" placeholder="0.00" class="money" />
-  </div>
-
-  <div class="card">
-    <h2 style="margin-bottom:10px">Lines (from Config &amp; dates)</h2>
-    <div style="overflow:auto">
-      <table>
-        <thead>
-          <tr>
-            <th class="center">Informed?</th>
-            <th>Sr_no</th>
-            <th>Name</th>
-            <th>Ph_no</th>
-            <th>Amount</th>
-            <th>Previous Due</th>
-            <th>Payments</th>
-            <th>Balance_due</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
+  <main class="card" id="card">
+    <div class="field">
+      <div class="input-wrap">
+        <input id="codeInput" type="password" inputmode="numeric" autocomplete="off" placeholder="Enter code" aria-label="Access code" />
+        <button class="icon-btn" id="toggleBtn" aria-label="Show/Hide code" title="Show/Hide">👁️</button>
+      </div>
+      <button class="btn" id="submitBtn">Unlock</button>
     </div>
-    <div class="totals">
-      <span class="pill">Total Amount: <b id="totalAmount">0.00</b></span>
-      <span class="pill">Total Balance Due: <b id="totalDue">0.00</b></span>
+    <div id="status" class="status" aria-live="polite"></div>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="backdrop" aria-modal="true" role="dialog">
+    <div class="modal" id="modal">
+      <div class="options">
+        <a class="opt" id="goDashboard" href="summary.html">
+          <h4>Dashboard</h4>
+          <p>Overview, KPIs, and quick actions.</p>
+        </a>
+        <a class="opt" id="goTables" href="tables.html">
+          <h4>Tables</h4>
+          <p>Detailed records and data views.</p>
+        </a>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Pick Next Bill Date Modal -->
-<div id="dateModal" class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 style="margin:0">Next bill date</h2>
-      <button id="dmClose" class="ghost">✕</button>
-    </div>
-    <label class="small">Choose the bill date for the <b>next</b> bill page</label>
-    <input id="dmInput" type="date" />
-    <div class="row" style="margin-top:10px;justify-content:flex-end">
-      <button id="dmCancel" class="ghost">Cancel</button>
-      <button id="dmOK" class="primary">Create</button>
-    </div>
-  </div>
-</div>
+  <script>
+    // Generate internal code from current time at page load
+    (function init(){
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      // "hh:mm" -> "hhmm" -> reverse => e.g., 05:24 -> "0524" -> "4250"
+      window.__internalCode = (hh + mm).split('').reverse().join('');
+    })();
 
-<!-- Config Modal -->
-<div id="configModal" class="modal-backdrop">
-  <div class="modal" style="width:min(980px,95vw)">
-    <div class="modal-header">
-      <h2 style="margin:0">Config – People</h2>
-      <button id="cfgClose" class="ghost">✕</button>
-    </div>
+    const input = document.getElementById('codeInput');
+    const btn = document.getElementById('submitBtn');
+    const statusEl = document.getElementById('status');
+    const card = document.getElementById('card');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const backdrop = document.getElementById('backdrop');
+    const modal = document.getElementById('modal');
 
-    <div class="row" style="margin-bottom:8px">
-      <button id="cfgAdd" class="ghost">+ Add Person</button>
-      <span class="muted">Active when <b>Archive_month/year</b> is empty and bill’s month ≥ <b>Active_month/year</b>. “Archive → next” sets archive to the <b>next month of the current bill date</b>.</span>
-    </div>
-
-    <div class="sectionTitle">Active</div>
-    <div style="overflow:auto; max-height:34vh;">
-      <table>
-        <thead>
-          <tr>
-            <th>Sr_No</th>
-            <th>Name</th>
-            <th>Ph_No</th>
-            <th>Active_month/year</th>
-            <th>Archive_month/year</th>
-            <th class="center">Archive → next</th>
-            <th class="center">Delete</th>
-          </tr>
-        </thead>
-        <tbody id="cfgActiveBody"></tbody>
-      </table>
-    </div>
-
-    <div class="sectionTitle">Archived</div>
-    <div style="overflow:auto; max-height:34vh;">
-      <table>
-        <thead>
-          <tr>
-            <th>Sr_No</th>
-            <th>Name</th>
-            <th>Ph_No</th>
-            <th>Active_month/year</th>
-            <th>Archive_month/year</th>
-            <th class="center">Delete</th>
-          </tr>
-        </thead>
-        <tbody id="cfgArchivedBody"></tbody>
-      </table>
-    </div>
-
-    <div class="row" style="margin-top:10px;justify-content:flex-end">
-      <button id="cfgSave" class="primary">Done</button>
-    </div>
-  </div>
-</div>
-
-<!-- Connect (Token) Modal -->
-<div id="tokenModal" class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 style="margin:0">Connect to GitHub</h2>
-      <button id="tkClose" class="ghost">✕</button>
-    </div>
-    <label class="small">Enter your GitHub Fine-Grained PAT (Contents: Read &amp; Write on your repo). Stored only for this session.</label>
-    <input id="tkInput" type="password" placeholder="ghp_... or github_pat_..." />
-    <div class="row" style="margin-top:10px;justify-content:flex-end">
-      <button id="tkSkip" class="ghost" title="Use local data only for now">Skip</button>
-      <button id="tkLoad" class="primary">Load from GitHub</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ===== One JSON on GitHub ===== */
-const OWNER     = 'coderMikhael';
-const REPO      = 'billm';
-const BRANCH    = 'data';
-const PATH_DATA = 'att-data.json';   // single file for everything
-/* ================================= */
-
-/* First bill seed */
-const FIRST_BILL_DATE = '2024-12-12';
-
-/* Local storage */
-const STORAGE_DATA = 'att.billing.single.v2';
-const STORAGE_TOKEN = 'att.billing.session.token'; // sessionStorage key
-const FILE_SCHEMA_VERSION = 1;
-
-/* Runtime token (session only) */
-let RUNTIME_TOKEN = '';
-
-/* Data shape & seed */
-function freshData(){
-  return { version: FILE_SCHEMA_VERSION, config:{ people: [] }, bills: [] };
-}
-let DATA = loadJSON(STORAGE_DATA) || freshData();
-let currentIndex = 0;
-
-/* Utils */
-function pad(n){ return String(n).padStart(2,'0'); }
-function toISODate(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
-function isoToHuman(iso){
-  if(!iso) return 'Bill date: —';
-  const d = new Date(iso + 'T12:00:00');
-  const day = String(d.getDate()).padStart(2,'0');
-  const mon = d.toLocaleString(undefined, { month: 'short' });
-  const yr  = d.getFullYear();
-  return `Bill date: ${day} ${mon} ${yr}`;
-}
-function monthKeyFromISO(iso){
-  const d = iso ? new Date(iso+'T12:00:00') : new Date();
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
-}
-function nextMonthKeyFromISO(iso){
-  const d = iso ? new Date(iso+'T12:00:00') : new Date();
-  const n = new Date(d.getFullYear(), d.getMonth()+1, 1);
-  return `${n.getFullYear()}-${pad(n.getMonth()+1)}`;
-}
-
-/* Storage */
-function loadJSON(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch{return null} }
-function saveJSON(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
-
-/* GitHub helpers */
-function hasValue(v){ return typeof v === 'string' && v.trim() !== ''; }
-function ghHeaders(){
-  const h = { Accept: 'application/vnd.github+json' };
-  if(hasValue(RUNTIME_TOKEN)) h.Authorization = 'Bearer ' + RUNTIME_TOKEN.trim();
-  return h;
-}
-async function repoGetFile(ownerRepo, path, branch){
-  const res = await fetch(
-    `https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`,
-    { headers: ghHeaders() }
-  );
-  if(res.status===404) return null;
-  if(!res.ok){ const j=await res.json().catch(()=>({})); throw new Error(j.message || ('HTTP '+res.status)); }
-  return res.json();
-}
-async function repoPutFile(ownerRepo, path, branch, content, sha, message){
-  const body = {
-    message: message || 'Save ATT billing data',
-    content: btoa(unescape(encodeURIComponent(content))),
-    branch
-  };
-  if(sha) body.sha = sha;
-  const res = await fetch(
-    `https://api.github.com/repos/${ownerRepo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`,
-    { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) }
-  );
-  if(!res.ok){ const j=await res.json().catch(()=>({})); throw new Error(j.message || ('HTTP '+res.status)); }
-  return res.json();
-}
-
-/* Rules */
-function personActiveForBill(p, billISO){
-  const billKey = monthKeyFromISO(billISO);
-  const aFrom = p.activeFrom || '0000-01';
-  const aStop = p.archiveFrom || null;
-  const started = (aFrom <= billKey);
-  const notStopped = (aStop === null) || (billKey < aStop);
-  return started && notStopped;
-}
-
-/* Ensure bill exists */
-function ensureBill(idx){
-  if(!DATA.bills[idx]){
-    const prev = DATA.bills[idx-1];
-    DATA.bills[idx] = {
-      id: (prev?.id || 0) + 1,
-      billDate: null,
-      billAmount: 0,
-      rows: []
-    };
-  }
-}
-
-/* Build rows from config; compute prevDue from previous bill's balance */
-function ensureRowsFromConfig(idx){
-  const bill = DATA.bills[idx];
-  if(!bill.rows) bill.rows = [];
-
-  const prevMap = Object.fromEntries(bill.rows.map(r=>[r.personKey, r]));
-  const activePeople = (DATA.config.people||[])
-    .filter(p=>personActiveForBill(p, bill.billDate || toISODate(new Date())))
-    .sort((a,b)=>(Number(a.sr_no||0)-Number(b.sr_no||0)));
-
-  const prevBill = (idx>0) ? DATA.bills[idx-1] : null;
-  const prevRows = prevBill ? (prevBill.rows||[]) : [];
-
-  bill.rows = activePeople.map(p=>{
-    const pk = (p.phone||'').trim();
-    const existing = prevMap[pk] || {};
-
-    const prevRow = prevRows.find(rr => rr.personKey === pk);
-    const prevDueFresh = prevRow ? Number(prevRow.balance||0) : 0;
-
-    // If user manually edited prev due for this row, respect it; otherwise always pull fresh
-    const manual = existing._manualPrev === true;
-    const prevDue = manual ? Number(existing.prevDue||0) : prevDueFresh;
-
-    const amount  = Number(existing.amount ?? 0);
-    const balance = amount + prevDue;
-
-    return {
-      personKey: pk,
-      informed: !!existing.informed,
-      amount,
-      prevDue,
-      balance,
-      notes: existing.notes || '',
-      _manualPrev: manual
-    };
-  });
-}
-
-
-/* DOM refs */
-const el = {
-  billDateBadge: document.getElementById('billDateBadge'),
-  billAmount: document.getElementById('billAmount'),
-  tbody:      document.getElementById('tbody'),
-  totalAmount:document.getElementById('totalAmount'),
-  totalDue:   document.getElementById('totalDue'),
-  prevBtn: document.getElementById('prevBtn'),
-  nextBtn: document.getElementById('nextBtn'),
-  billGenBtn: document.getElementById('billGenBtn'),
-  undoBtn: document.getElementById('undoBtn'),
-  saveWebBtn: document.getElementById('saveWebBtn'),
-  configBtn:  document.getElementById('configBtn'),
-  configModal:document.getElementById('configModal'),
-  cfgClose:   document.getElementById('cfgClose'),
-  cfgAdd:     document.getElementById('cfgAdd'),
-  cfgActiveBody:   document.getElementById('cfgActiveBody'),
-  cfgArchivedBody: document.getElementById('cfgArchivedBody'),
-  cfgSave:    document.getElementById('cfgSave'),
-  dateModal: document.getElementById('dateModal'),
-  dmInput:   document.getElementById('dmInput'),
-  dmOK:      document.getElementById('dmOK'),
-  dmCancel:  document.getElementById('dmCancel'),
-  dmClose:   document.getElementById('dmClose'),
-  connectBtn: document.getElementById('connectBtn'),
-  tokenModal: document.getElementById('tokenModal'),
-  tkInput:    document.getElementById('tkInput'),
-  tkLoad:     document.getElementById('tkLoad'),
-  tkSkip:     document.getElementById('tkSkip'),
-  tkClose:    document.getElementById('tkClose'),
-};
-
-/* Render */
-function render(){
-  const bill = DATA.bills[currentIndex];
-  el.billDateBadge.textContent = isoToHuman(bill.billDate);
-
-  el.prevBtn.disabled = (currentIndex === 0);
-  el.nextBtn.disabled = (currentIndex >= DATA.bills.length-1);
-  const onLatest = (currentIndex === DATA.bills.length-1);
-  el.billGenBtn.disabled = !onLatest;
-  el.undoBtn.disabled = !(onLatest && DATA.bills.length >= 2);
-
-  ensureRowsFromConfig(currentIndex);
-  el.billAmount.value = bill.billAmount ?? 0;
-
-  renderRows();
-  updateTotals();
-}
-
-function renderRows(){
-  const bill = DATA.bills[currentIndex];
-  const rows = bill.rows || [];
-  const byPhone = Object.create(null);
-  (DATA.config.people||[]).forEach(p=>{ byPhone[(p.phone||'').trim()] = p; });
-
-  el.tbody.innerHTML = '';
-  rows.forEach((r, i)=>{
-    const p = byPhone[r.personKey] || {};
-    const tr = document.createElement('tr');
-
-    const tdInf = document.createElement('td'); tdInf.className='center';
-    const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!r.informed;
-    cb.addEventListener('change', ()=>{ r.informed=cb.checked; saveJSON(STORAGE_DATA, DATA); });
-    tdInf.appendChild(cb);
-
-    const tdSr  = document.createElement('td'); tdSr.textContent = String(i+1);
-    const tdNm  = document.createElement('td'); tdNm.textContent = p.name || '';
-    const tdPh  = document.createElement('td'); tdPh.textContent = p.phone || r.personKey || '';
-
-    const tdAmt = document.createElement('td');
-    const amt = document.createElement('input'); amt.type='number'; amt.step='0.01'; amt.min='0'; amt.className='money'; amt.value=r.amount ?? 0;
-
-    const tdPrev = document.createElement('td');
-    const pd = document.createElement('input'); pd.type='number'; pd.step='0.01'; pd.min='0'; pd.className='money'; pd.value=r.prevDue ?? 0;
-
-    // Payments (NEW)
-    const tdPay = document.createElement('td');
-    const pay = document.createElement('input');
-    pay.type = 'number';
-    pay.step = '0.01';
-    pay.min  = '0';
-    pay.className = 'money';
-    pay.value = r.payments ?? 0;
-
-
-      // Balance Due (read-only)
-    const tdBal = document.createElement('td');
-    const bal = document.createElement('input');
-    bal.type = 'number';
-    bal.step = '0.01';
-    bal.min  = '0';
-    bal.className = 'money';
-    bal.readOnly = true;
-    bal.value = (
-      Number(r.amount || 0) +
-      Number(r.prevDue || 0) -
-      Number(r.payments || 0)
-    ).toFixed(2);
-
-
-
-    amt.addEventListener('input', ()=>{
-      r.amount  = parseFloat(amt.value || '0');
-      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
-      bal.value = r.balance.toFixed(2);
-      saveJSON(STORAGE_DATA, DATA);
-      updateTotals();
-    });
-
-    pd.addEventListener('input', ()=>{
-      if (pd.value === '' || pd.value === null) {
-        r._manualPrev = false;
-        ensureRowsFromConfig(currentIndex);  // re-pull prevDue from last bill
-        render();                            // re-render table to reflect auto value
-        return;
+    function showStatus(ok){
+      statusEl.className = 'status ' + (ok ? 'ok' : 'fail');
+      statusEl.innerHTML = `<span class="dot"></span>${ok ? 'Success' : 'Failure'}`;
+      if(!ok){
+        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
       }
-      r.prevDue = parseFloat(pd.value || '0');
-      r._manualPrev = true;  // manual override engaged
-      r.balance = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
-      bal.value = r.balance.toFixed(2);
-      saveJSON(STORAGE_DATA, DATA);
-      updateTotals();
-    });
-
-    pay.addEventListener('input', ()=>{
-      r.payments = parseFloat(pay.value || '0');
-      r.balance  = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
-      bal.value  = r.balance.toFixed(2);
-      saveJSON(STORAGE_DATA, DATA);
-      updateTotals();
-    });
-
-
-    const tdNt  = document.createElement('td');
-    const nt = document.createElement('input'); nt.type='text'; nt.className='notes'; nt.placeholder='Notes'; nt.value=r.notes||'';
-    nt.addEventListener('input', ()=>{ r.notes=nt.value; saveJSON(STORAGE_DATA, DATA); });
-
-    tdAmt.appendChild(amt);
-    tdPrev.appendChild(pd);
-    tdPay.appendChild(pay);
-    tdBal.appendChild(bal);
-    tdNt.appendChild(nt);
-
-    tr.append(tdInf, tdSr, tdNm, tdPh, tdAmt, tdPrev, tdPay, tdBal, tdNt);
-    el.tbody.appendChild(tr);
-  });
-}
-
-
-function updateTotals(){
-  const rows = DATA.bills[currentIndex].rows || [];
-
-  const totAmt = rows.reduce((s,r)=> s + Number(r.amount   || 0), 0);
-  const totPay = rows.reduce((s,r)=> s + Number(r.payments || 0), 0);
-
-  // keep per-row balance in sync with Amount + PrevDue - Payments
-  rows.forEach(r=>{
-    r.balance = Number(r.amount || 0) + Number(r.prevDue || 0) - Number(r.payments || 0);
-  });
-
-  const totDue = rows.reduce((s,r)=> s + Number(r.balance || 0), 0);
-
-  el.totalAmount.textContent = totAmt.toFixed(2);
-  el.totalDue.textContent    = totDue.toFixed(2);
-
-  // If you later add a "Total Payments" pill, you'll already have totPay
-  // e.g., document.getElementById('totalPayments').textContent = totPay.toFixed(2);
-}
-
-/* Events: nav + bill gen + date modal */
-el.prevBtn.addEventListener('click', ()=>{ if(currentIndex>0){ currentIndex--; render(); saveJSON(STORAGE_DATA, DATA); } });
-el.nextBtn.addEventListener('click', ()=>{ if(currentIndex < DATA.bills.length-1){ currentIndex++; render(); saveJSON(STORAGE_DATA, DATA); } });
-el.billGenBtn.addEventListener('click', ()=>{
-  const todayISO = toISODate(new Date());
-  el.dmInput.value = todayISO;
-  el.dateModal.style.display = 'flex';
-});
-el.dmClose.addEventListener('click', ()=> el.dateModal.style.display='none');
-el.dmCancel.addEventListener('click', ()=> el.dateModal.style.display='none');
-el.dmOK.addEventListener('click', ()=>{
-  const chosen = el.dmInput.value;
-  if(!chosen){ alert('Please pick a date.'); return; }
-  const curr = DATA.bills[currentIndex];
-  const nextId = (curr?.id || 0) + 1;
-  DATA.bills.push({ id: nextId, billDate: chosen, billAmount: 0, rows: [] });
-  currentIndex = DATA.bills.length - 1;
-  ensureRowsFromConfig(currentIndex);
-  saveJSON(STORAGE_DATA, DATA);
-  el.dateModal.style.display='none';
-  render();
-});
-el.undoBtn.addEventListener('click', ()=>{
-  if(currentIndex === DATA.bills.length-1 && DATA.bills.length >= 2){
-    DATA.bills.pop();
-    currentIndex = DATA.bills.length - 1;
-    saveJSON(STORAGE_DATA, DATA);
-    render();
-  }
-});
-el.billAmount.addEventListener('input', ()=>{
-  const b = DATA.bills[currentIndex];
-  b.billAmount = parseFloat(el.billAmount.value||'0');
-  saveJSON(STORAGE_DATA, DATA);
-});
-
-/* Config modal */
-el.configBtn.addEventListener('click', ()=>{ renderConfigTables(); el.configModal.style.display='flex'; });
-el.cfgClose.addEventListener('click', ()=> el.configModal.style.display='none');
-el.cfgSave.addEventListener('click', ()=>{
-  saveJSON(STORAGE_DATA, DATA);
-  ensureRowsFromConfig(currentIndex);
-  saveJSON(STORAGE_DATA, DATA);
-  render();
-  el.configModal.style.display='none';
-});
-el.cfgAdd.addEventListener('click', ()=>{
-  DATA.config.people.push({
-    sr_no: (DATA.config.people.length+1),
-    name:'', phone:'',
-    activeFrom: monthKeyFromISO(null),
-    archiveFrom: null
-  });
-  saveJSON(STORAGE_DATA, DATA);
-  renderConfigTables();
-});
-
-function renderConfigTables(){
-  const active = [], archived = [];
-  (DATA.config.people||[]).forEach(p => (p.archiveFrom ? archived : active).push(p));
-  active.sort((a,b)=>(Number(a.sr_no||0)-Number(b.sr_no||0)));
-
-  const currISO = DATA.bills[currentIndex]?.billDate || toISODate(new Date());
-
-  el.cfgActiveBody.innerHTML = '';
-  el.cfgArchivedBody.innerHTML = '';
-
-  active.forEach((p, idx)=>{
-    const tr = document.createElement('tr');
-
-    const tdSr = document.createElement('td'); tdSr.textContent = String(idx+1); tr.appendChild(tdSr);
-    tr.appendChild(cfgTextCell(p, 'name', 'Full name'));
-    tr.appendChild(cfgTextCell(p, 'phone', '555-123-4567', 'phone'));
-    tr.appendChild(cfgMonthCell(p, 'activeFrom'));
-    tr.appendChild(cfgMonthCell(p, 'archiveFrom', ()=>{ renderConfigTables(); }));
-
-    const tdArc = document.createElement('td'); tdArc.className='center';
-    const ab = document.createElement('button'); ab.textContent='Archive'; ab.className='warn';
-    ab.title='Move to Archived (from next month of current bill date)';
-    ab.addEventListener('click', ()=>{
-      p.archiveFrom = nextMonthKeyFromISO(currISO);
-      saveJSON(STORAGE_DATA, DATA);
-      renderConfigTables();
-      ensureRowsFromConfig(currentIndex);
-      saveJSON(STORAGE_DATA, DATA);
-      render();
-    });
-    tdArc.appendChild(ab); tr.appendChild(tdArc);
-
-    const tdDel = document.createElement('td'); tdDel.className='center';
-    const db = document.createElement('button'); db.textContent='Delete'; db.className='danger';
-    db.title='Remove from config (history stays in past bills)';
-    db.addEventListener('click', ()=>{
-      if(confirm(`Delete ${p.name || p.phone || 'this person'} from config? This does not change past bills.`)){
-        const i = DATA.config.people.indexOf(p);
-        if(i>=0){ DATA.config.people.splice(i,1); saveJSON(STORAGE_DATA, DATA); renderConfigTables(); ensureRowsFromConfig(currentIndex); saveJSON(STORAGE_DATA, DATA); render(); }
-      }
-    });
-    tdDel.appendChild(db); tr.appendChild(tdDel);
-
-    el.cfgActiveBody.appendChild(tr);
-  });
-
-  archived.forEach((p, idx)=>{
-    const tr = document.createElement('tr');
-    const tdSr = document.createElement('td'); tdSr.textContent = String(idx+1); tr.appendChild(tdSr);
-    tr.appendChild(cfgTextCell(p, 'name', 'Full name'));
-    tr.appendChild(cfgTextCell(p, 'phone', '555-123-4567', 'phone'));
-    tr.appendChild(cfgMonthCell(p, 'activeFrom'));
-    tr.appendChild(cfgMonthCell(p, 'archiveFrom', ()=>{ renderConfigTables(); }));
-
-    const tdDel = document.createElement('td'); tdDel.className='center';
-    const db = document.createElement('button'); db.textContent='Delete'; db.className='danger';
-    db.title='Remove from config (history stays in past bills)';
-    db.addEventListener('click', ()=>{
-      if(confirm(`Delete ${p.name || p.phone || 'this person'} from config? This does not change past bills.`)){
-        const i = DATA.config.people.indexOf(p);
-        if(i>=0){ DATA.config.people.splice(i,1); saveJSON(STORAGE_DATA, DATA); renderConfigTables(); ensureRowsFromConfig(currentIndex); saveJSON(STORAGE_DATA, DATA); render(); }
-      }
-    });
-    tdDel.appendChild(db); tr.appendChild(tdDel);
-
-    el.cfgArchivedBody.appendChild(tr);
-  });
-}
-
-function cfgTextCell(obj, key, placeholder, cls){
-  const td = document.createElement('td');
-  const inp = document.createElement('input');
-  inp.type='text'; if(cls) inp.className=cls;
-  inp.placeholder = placeholder || '';
-  inp.value = obj[key] || '';
-  inp.addEventListener('input', ()=>{ obj[key]=inp.value; saveJSON(STORAGE_DATA, DATA); });
-  td.appendChild(inp);
-  return td;
-}
-function cfgMonthCell(obj, key, onChange){
-  const td = document.createElement('td');
-  const m = document.createElement('input'); m.type='month'; m.value=(obj[key]||'').slice(0,7);
-  m.addEventListener('input', ()=>{
-    obj[key] = m.value || null;
-    saveJSON(STORAGE_DATA, DATA);
-    if(onChange) onChange();
-  });
-  td.appendChild(m);
-  return td;
-}
-
-/* Save to Web (single file) */
-async function saveToWeb(){
-  if(!hasValue(RUNTIME_TOKEN)){ alert('Enter token via Connect → Load from GitHub first.'); return; }
-  const ownerRepo = `${OWNER.trim()}/${REPO.trim()}`;
-
-  try{
-    let sha = null;
-    const meta = await repoGetFile(ownerRepo, PATH_DATA, BRANCH.trim()).catch(()=>null);
-    if(meta && meta.sha) sha = meta.sha;
-
-    await repoPutFile(ownerRepo, PATH_DATA, BRANCH.trim(), JSON.stringify(DATA,null,2), sha, 'Save ATT billing (single file)');
-    alert('Saved to web JSON ✅');
-  }catch(err){
-    const msg = String(err && err.message || err);
-    if(/Bad credentials|401/.test(msg)){
-      alert('GitHub auth failed (401). Check token value/permissions.');
-    }else if(/Repository access blocked|404 Not Found|Not Found/.test(msg)){
-      alert('Repo/path not found or no access. Verify OWNER/REPO/BRANCH and file path.');
-    }else{
-      alert('Save failed: ' + msg);
     }
-  }
-}
-el.saveWebBtn.addEventListener('click', ()=> saveToWeb().catch(e=>alert('Save failed: '+e.message)));
-
-/* Connect modal logic */
-function openTokenModal(){ el.tokenModal.style.display='flex'; el.tkInput.focus(); }
-function closeTokenModal(){ el.tokenModal.style.display='none'; }
-
-el.connectBtn.addEventListener('click', openTokenModal);
-el.tkClose.addEventListener('click', closeTokenModal);
-el.tkSkip.addEventListener('click', closeTokenModal);
-el.tkLoad.addEventListener('click', async ()=>{
-  const tk = (el.tkInput.value || '').trim();
-  if(!hasValue(tk)){ alert('Please paste a GitHub token.'); return; }
-  RUNTIME_TOKEN = tk;
-  try{ sessionStorage.setItem(STORAGE_TOKEN, RUNTIME_TOKEN); }catch{}
-  try{
-    await loadFromWebOnce();   // fetch DATA using this token
-    render();
-    alert('Loaded from GitHub ✅');
-    closeTokenModal();
-  }catch(err){
-    const msg = String(err && err.message || err);
-    if(/Bad credentials|401/.test(msg)){
-      alert('GitHub auth failed (401). Check token value/permissions.');
-    }else if(/404 Not Found|Not Found/.test(msg)){
-      // No file yet: keep local seed; saving will create the file.
-      alert('No data file found in repo yet. You can Save to Web to create it.');
-      closeTokenModal();
-    }else{
-      alert('Load failed: ' + msg);
+    function openModal(){
+      backdrop.style.display = 'flex';
+      requestAnimationFrame(() => modal.classList.add('show'));
+      setTimeout(() => document.getElementById('goDashboard').focus(), 60);
     }
-  }
-});
-
-/* Boot: show token modal, seed local, allow manual load */
-async function loadFromWebOnce(){
-  const ownerRepo = `${OWNER}/${REPO}`;
-  const meta = await repoGetFile(ownerRepo, PATH_DATA, BRANCH);
-  if(meta?.content){
-    const parsed = JSON.parse(decodeURIComponent(escape(atob(meta.content))));
-    if(parsed && typeof parsed === 'object') DATA = parsed;
-  }
-  if(!DATA.version) DATA.version = FILE_SCHEMA_VERSION;
-  if(!DATA.config || !Array.isArray(DATA.config.people)) DATA.config = { people: [] };
-  if(!Array.isArray(DATA.bills) || DATA.bills.length===0){
-    DATA.bills = [
-      { id: 1, billDate: FIRST_BILL_DATE, billAmount: 0, rows: [] },
-      { id: 2, billDate: null,           billAmount: 0, rows: [] }
-    ];
-  }
-  currentIndex = DATA.bills.length-1;
-  ensureRowsFromConfig(currentIndex);
-  saveJSON(STORAGE_DATA, DATA);
-}
-
-(async function init(){
-  // Restore session token if present (but don't auto-load; user must click Load)
-  try{
-    const stored = sessionStorage.getItem(STORAGE_TOKEN);
-    if(hasValue(stored)){ RUNTIME_TOKEN = stored; el.tkInput.value = stored; }
-  }catch{}
-  // Seed local if empty
-  if(!DATA.version || !Array.isArray(DATA.bills) || DATA.bills.length===0){
-    DATA = freshData();
-    DATA.bills = [
-      { id: 1, billDate: FIRST_BILL_DATE, billAmount: 0, rows: [] },
-      { id: 2, billDate: null,           billAmount: 0, rows: [] }
-    ];
-    saveJSON(STORAGE_DATA, DATA);
-  }
-  currentIndex = DATA.bills.length-1;
-  ensureRowsFromConfig(currentIndex);
-  render();
-
-  // Prompt for token at startup
-  //openTokenModal();
-})();
-</script>
+    function checkCode(){
+      const entered = input.value.trim();
+      const ok = entered === window.__internalCode;
+      showStatus(ok);
+      if(ok) openModal();
+    }
+    btn.addEventListener('click', checkCode);
+    input.addEventListener('keydown', (e) => { if(e.key === 'Enter') checkCode(); });
+    toggleBtn.addEventListener('click', () => {
+      const isPwd = input.type === 'password';
+      input.type = isPwd ? 'text' : 'password';
+      toggleBtn.textContent = isPwd ? '🙈' : '👁️';
+      input.focus();
+    });
+    // Close modal on backdrop click or Escape
+    backdrop.addEventListener('click', (e) => { if(e.target === backdrop){ modal.classList.remove('show'); setTimeout(()=>backdrop.style.display='none', 180); }});
+    window.addEventListener('keydown', (e) => { if(e.key === 'Escape' && backdrop.style.display==='flex'){ modal.classList.remove('show'); setTimeout(()=>backdrop.style.display='none', 180); }});
+  </script>
 </body>
 </html>
