@@ -96,7 +96,7 @@
     <h1>AT&amp;T Billing – Summary</h1>
     <span id="rangeBadge" class="pill"></span>
     <div class="spacer"></div>
-    <a class="link" href="index.html">Open Main</a>
+    <a class="link" href="tables.html">Open Main</a>
   </div>
 
   <div class="card" style="margin-bottom:14px">
@@ -149,7 +149,7 @@
 
   <div id="emptyMsg" class="card" style="display:none">
     <div style="font-weight:600;margin-bottom:6px">No local data found</div>
-    <div class="muted">Open <b>index.html</b> first so it saves data to this browser, then return here.</div>
+    <div class="muted">Open <b>tables.html</b> first so it saves data to this browser, then return here.</div>
   </div>
 
   <div id="content" style="display:none">
@@ -510,6 +510,56 @@ function wireEvents(){
   el.mode.value = 'all';
   render();
 })();
+/**
+ * Idle → refresh → go back to auth
+ * - We track last user activity across tabs using localStorage.
+ * - On load of tables/summary, if idle > 2 min, redirect to auth.
+ */
+(function(){
+  const AUTH_PAGE = 'index.html';     // your password page
+  const KEY = 'att.lastActive';
+  const IDLE_LIMIT_MS = 2 * 60 * 1000; // 2 minutes
+
+  // Mark activity (throttled to avoid excessive writes)
+  let lastWrite = 0;
+  function markActive(){
+    const now = Date.now();
+    if (now - lastWrite > 3000) { // write at most every 3s
+      localStorage.setItem(KEY, String(now));
+      lastWrite = now;
+    }
+  }
+
+  // On load: check idle window; if too long, bounce to auth
+  (function checkIdleOnLoad(){
+    const now = Date.now();
+    const last = Number(localStorage.getItem(KEY) || 0);
+    const idleMs = now - last;
+
+    if (last > 0 && idleMs > IDLE_LIMIT_MS) {
+      // Too long since last activity → require re-auth
+      window.location.replace(AUTH_PAGE);
+      return;
+    }
+    // Not idle (or first time) → mark now so a future refresh has a reference
+    markActive();
+  })();
+
+  // Count user interactions as activity
+  ['mousemove','mousedown','keydown','scroll','touchstart','pointerdown','visibilitychange']
+    .forEach(evt => {
+      window.addEventListener(evt, () => {
+        // Only update while tab is visible to avoid false “activity”
+        if (document.visibilityState !== 'hidden') markActive();
+      }, {passive:true});
+    });
+
+  // If another tab updates activity, reflect it here (keeps all tabs in sync)
+  window.addEventListener('storage', (e) => {
+    if (e.key === KEY) lastWrite = Number(e.newValue || Date.now());
+  });
+})();
+
 </script>
 </body>
 </html>
