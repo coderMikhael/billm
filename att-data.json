@@ -594,90 +594,90 @@
           "informed": false,
           "amount": 41.8,
           "prevDue": 336.44,
+          "payments": 0,
           "balance": 378.24,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "667.216.5165",
           "informed": false,
           "amount": 51.85,
           "prevDue": 379.33,
+          "payments": 0,
           "balance": 431.18,
           "notes": "",
-          "_manualPrev": true,
-          "payments": 0
+          "_manualPrev": true
         },
         {
           "personKey": "443.851.0254",
           "informed": false,
           "amount": 57.31,
           "prevDue": 380.54,
+          "payments": 0,
           "balance": 437.85,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "856.526.2181",
           "informed": false,
           "amount": 58.44,
           "prevDue": 401.19,
+          "payments": 0,
           "balance": 459.63,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "410.622.6479",
           "informed": false,
           "amount": 41.85,
           "prevDue": 250.28,
+          "payments": 0,
           "balance": 292.13,
           "notes": "",
-          "_manualPrev": true,
-          "payments": 0
+          "_manualPrev": true
         },
         {
           "personKey": "617.415.8580",
           "informed": false,
           "amount": 73.43,
           "prevDue": 279.06,
-          "balance": 352.49,
+          "payments": 371.75,
+          "balance": -19.25999999999999,
           "notes": "344.01 (ATT refund) + 27.74 (Surya)",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "443.473.4375",
           "informed": false,
           "amount": 41.8,
           "prevDue": 203.57,
+          "payments": 0,
           "balance": 245.37,
           "notes": "",
-          "_manualPrev": true,
-          "payments": 0
+          "_manualPrev": true
         },
         {
           "personKey": "781.605.8409",
           "informed": false,
           "amount": 64.3,
           "prevDue": 88.53,
+          "payments": 0,
           "balance": 152.82999999999998,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "443.851.6378",
           "informed": false,
           "amount": 58.44,
           "prevDue": 386.5,
+          "payments": 0,
           "balance": 444.94,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         }
       ]
     },
@@ -691,80 +691,80 @@
           "informed": false,
           "amount": 36.75,
           "prevDue": 378.24,
+          "payments": 0,
           "balance": 414.99,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "667.216.5165",
           "informed": false,
           "amount": 46.8,
           "prevDue": 431.18,
+          "payments": 0,
           "balance": 477.98,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "443.851.0254",
           "informed": false,
           "amount": 46.8,
           "prevDue": 437.85,
+          "payments": 0,
           "balance": 484.65000000000003,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "856.526.2181",
           "informed": false,
           "amount": 48.23,
           "prevDue": 459.63,
+          "payments": 0,
           "balance": 507.86,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "410.622.6479",
           "informed": false,
           "amount": 36.8,
           "prevDue": 292.13,
+          "payments": 0,
           "balance": 328.93,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "443.473.4375",
           "informed": false,
           "amount": 36.75,
           "prevDue": 245.37,
+          "payments": 0,
           "balance": 282.12,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         },
         {
           "personKey": "443.315.9371",
           "informed": false,
           "amount": 51.94,
           "prevDue": 40,
+          "payments": 0,
           "balance": 91.94,
           "notes": "",
-          "_manualPrev": true,
-          "payments": 0
+          "_manualPrev": true
         },
         {
           "personKey": "443.851.6378",
           "informed": false,
           "amount": 53.39,
           "prevDue": 444.94,
+          "payments": 0,
           "balance": 498.33,
           "notes": "",
-          "_manualPrev": false,
-          "payments": 0
+          "_manualPrev": false
         }
       ]
     },
