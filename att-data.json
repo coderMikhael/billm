@@ -548,18 +548,20 @@
           "informed": false,
           "amount": 41.8,
           "prevDue": 336.44,
-          "balance": 378.24,
+          "balance": 50.74000000000001,
           "notes": "",
-          "_manualPrev": false
+          "_manualPrev": false,
+          "payments": 327.5
         },
         {
           "personKey": "667.216.5165",
           "informed": false,
           "amount": 51.85,
           "prevDue": 379.33,
-          "balance": 431.18,
+          "balance": 103.68,
           "notes": "",
-          "_manualPrev": true
+          "_manualPrev": true,
+          "payments": 327.5
         },
         {
           "personKey": "443.851.0254",
