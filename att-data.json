@@ -717,7 +717,7 @@
           "prevDue": 414.99,
           "balance": 545.58,
           "notes": "",
-          "_manualPrev": false
+          "_prevFromBillId": 8
         },
         {
           "personKey": "667.216.5165",
@@ -726,7 +726,7 @@
           "prevDue": 477.98,
           "balance": 524.78,
           "notes": "",
-          "_manualPrev": false
+          "_prevFromBillId": 8
         },
         {
           "personKey": "443.851.0254",
@@ -735,7 +735,7 @@
           "prevDue": 484.65000000000003,
           "balance": 531.45,
           "notes": "",
-          "_manualPrev": false
+          "_prevFromBillId": 8
         },
         {
           "personKey": "856.526.2181",
@@ -744,7 +744,7 @@
           "prevDue": 507.86,
           "balance": 550.65,
           "notes": "",
-          "_manualPrev": false
+          "_prevFromBillId": 8
         },
         {
           "personKey": "410.622.6479",
@@ -753,7 +753,7 @@
           "prevDue": 328.93,
           "balance": 365.73,
           "notes": "",
-          "_manualPrev": false
+          "_prevFromBillId": 8
         },
         {
           "personKey": "443.315.9371",
@@ -762,7 +762,7 @@
           "prevDue": 91.94,
           "balance": 141.49,
           "notes": "",
-          "_manualPrev": false
+          "_prevFromBillId": 8
         },
         {
           "personKey": "443.985.3407",
@@ -771,7 +771,7 @@
           "prevDue": 40,
           "balance": 122.96,
           "notes": "",
-          "_manualPrev": true
+          "_prevFromBillId": 8
         },
         {
           "personKey": "443.851.6378",
@@ -780,7 +780,7 @@
           "prevDue": 498.33,
           "balance": 551.72,
           "notes": "",
-          "_manualPrev": false
+          "_prevFromBillId": 8
         }
       ]
     }
