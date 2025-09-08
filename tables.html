@@ -251,6 +251,21 @@ let RUNTIME_TOKEN = '';
 function freshData(){
   return { version: FILE_SCHEMA_VERSION, config:{ people: [] }, bills: [] };
 }
+/* One-time data shape migration: make sure every row has payments and correct balance */
+function migrateDataShape(){
+  if(!DATA || !Array.isArray(DATA.bills)) return;
+  DATA.bills.forEach(bill=>{
+    bill.rows = (bill.rows||[]).map(r=>{
+      const amount   = Number(r.amount || 0);
+      const prevDue  = Number(r.prevDue || 0);
+      const payments = Number(r.payments || 0);   // default 0 if missing
+      r.payments = Number.isFinite(payments) ? payments : 0;
+      r.balance  = amount + prevDue - r.payments; // keep consistent
+      return r;
+    });
+  });
+}
+
 let DATA = loadJSON(STORAGE_DATA) || freshData();
 let currentIndex = 0;
 
@@ -334,40 +349,47 @@ function ensureBill(idx){
 }
 
 /* Build rows from config; compute prevDue from previous bill's balance */
+/* Build rows from config; compute prevDue from previous bill's balance
+   and PRESERVE per-row values like `payments`, `notes`, `informed`. */
 function ensureRowsFromConfig(idx){
   const bill = DATA.bills[idx];
   if(!bill.rows) bill.rows = [];
 
-  const prevMap = Object.fromEntries(bill.rows.map(r=>[r.personKey, r]));
-  const activePeople = (DATA.config.people||[])
-    .filter(p=>personActiveForBill(p, bill.billDate || toISODate(new Date())))
-    .sort((a,b)=>(Number(a.sr_no||0)-Number(b.sr_no||0)));
+  // Preserve existing row fields by personKey
+  const existingByKey = Object.fromEntries((bill.rows||[]).map(r => [ (r.personKey||'').trim(), r ]));
 
-  const prevBill = (idx>0) ? DATA.bills[idx-1] : null;
+  // Who should be present for this bill date?
+  const activePeople = (DATA.config.people||[])
+    .filter(p => personActiveForBill(p, bill.billDate || toISODate(new Date())))
+    .sort((a,b) => (Number(a.sr_no||0) - Number(b.sr_no||0)));
+
+  // Use previous bill's BALANCE as fresh prevDue unless manually overridden
+  const prevBill = (idx > 0) ? DATA.bills[idx-1] : null;
   const prevRows = prevBill ? (prevBill.rows||[]) : [];
 
-  bill.rows = activePeople.map(p=>{
-    const pk = (p.phone||'').trim();
-    const existing = prevMap[pk] || {};
+  bill.rows = activePeople.map(p => {
+    const key = (p.phone||'').trim();
 
-    const prevRow = prevRows.find(rr => rr.personKey === pk);
-    const prevDueFresh = prevRow ? Number(prevRow.balance||0) : 0;
+    const was  = existingByKey[key] || {}; // previous state for THIS bill (to preserve)
+    const prev = prevRows.find(rr => ((rr.personKey||'').trim() === key)); // last bill state
 
-    // If user manually edited prev due for this row, respect it; otherwise always pull fresh
-    const manual = existing._manualPrev === true;
-    const prevDue = manual ? Number(existing.prevDue||0) : prevDueFresh;
+    const freshPrevDue = prev ? Number(prev.balance||0) : 0;
+    const manualPrev   = was._manualPrev === true;
+    const prevDue      = manualPrev ? Number(was.prevDue||0) : freshPrevDue;
 
-    const amount  = Number(existing.amount ?? 0);
-    const balance = amount + prevDue;
+    const amount   = Number(was.amount ?? 0);
+    const payments = Number(was.payments ?? 0);   // ← PRESERVE payments
+    const balance  = amount + prevDue - payments; // ← include payments
 
     return {
-      personKey: pk,
-      informed: !!existing.informed,
+      personKey: key,
+      informed:  !!was.informed,
       amount,
       prevDue,
+      payments,               // ← keep payments in row
       balance,
-      notes: existing.notes || '',
-      _manualPrev: manual
+      notes:     was.notes || '',
+      _manualPrev: manualPrev
     };
   });
 }
@@ -755,6 +777,8 @@ async function loadFromWebOnce(){
     const parsed = JSON.parse(decodeURIComponent(escape(atob(meta.content))));
     if(parsed && typeof parsed === 'object') DATA = parsed;
   }
+  migrateDataShape();
+
   if(!DATA.version) DATA.version = FILE_SCHEMA_VERSION;
   if(!DATA.config || !Array.isArray(DATA.config.people)) DATA.config = { people: [] };
   if(!Array.isArray(DATA.bills) || DATA.bills.length===0){
@@ -783,6 +807,7 @@ async function loadFromWebOnce(){
     ];
     saveJSON(STORAGE_DATA, DATA);
   }
+  migrateDataShape();
   currentIndex = DATA.bills.length-1;
   ensureRowsFromConfig(currentIndex);
   render();
