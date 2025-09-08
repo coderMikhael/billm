@@ -689,8 +689,8 @@
           "personKey": "443.315.9371",
           "informed": false,
           "amount": 51.94,
-          "prevDue": 0,
-          "balance": 51.94,
+          "prevDue": 40,
+          "balance": 91.94,
           "notes": "",
           "_prevFromBillId": 7
         },
@@ -702,6 +702,85 @@
           "balance": 498.33,
           "notes": "",
           "_prevFromBillId": 7
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "billDate": "2025-08-12",
+      "billAmount": 0,
+      "rows": [
+        {
+          "personKey": "443.769.6070",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 374.99,
+          "balance": 374.99,
+          "notes": "",
+          "_prevFromBillId": 8
+        },
+        {
+          "personKey": "667.216.5165",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 437.97,
+          "balance": 437.97,
+          "notes": "",
+          "_prevFromBillId": 8
+        },
+        {
+          "personKey": "443.851.0254",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 439.66,
+          "balance": 439.66,
+          "notes": "",
+          "_prevFromBillId": 8
+        },
+        {
+          "personKey": "856.526.2181",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 467.85,
+          "balance": 467.85,
+          "notes": "",
+          "_prevFromBillId": 8
+        },
+        {
+          "personKey": "410.622.6479",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 328.89,
+          "balance": 328.89,
+          "notes": "",
+          "_prevFromBillId": 8
+        },
+        {
+          "personKey": "443.315.9371",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 51.94,
+          "balance": 51.94,
+          "notes": "",
+          "_prevFromBillId": 8
+        },
+        {
+          "personKey": "443.985.3407",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 0,
+          "balance": 0,
+          "notes": "",
+          "_prevFromBillId": 8
+        },
+        {
+          "personKey": "443.851.6378",
+          "informed": false,
+          "amount": 0,
+          "prevDue": 498.33,
+          "balance": 498.33,
+          "notes": "",
+          "_prevFromBillId": 8
         }
       ]
     }
