@@ -42,21 +42,21 @@
         "name": "Supraja",
         "phone": "617.415.8580",
         "activeFrom": "2025-01",
-        "archiveFrom": "2025-07"
+        "archiveFrom": "2025-08"
       },
       {
         "sr_no": 7,
         "name": "Vrithika",
         "phone": "443.473.4375",
         "activeFrom": "2025-01",
-        "archiveFrom": "2025-07"
+        "archiveFrom": "2025-08"
       },
       {
         "sr_no": 8,
         "name": "Sumaiyah",
         "phone": "781.605.8409",
         "activeFrom": "2025-05",
-        "archiveFrom": "2025-06"
+        "archiveFrom": "2025-07"
       },
       {
         "sr_no": 9,
@@ -535,6 +535,94 @@
           "balance": 386.5,
           "notes": "",
           "_prevFromBillId": 5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "billDate": "2025-06-12",
+      "billAmount": -19.25,
+      "rows": [
+        {
+          "personKey": "443.769.6070",
+          "informed": false,
+          "amount": 41.8,
+          "prevDue": 296.44,
+          "balance": 338.24,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "667.216.5165",
+          "informed": false,
+          "amount": 51.85,
+          "prevDue": 339.32,
+          "balance": 391.17,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "443.851.0254",
+          "informed": false,
+          "amount": 57.31,
+          "prevDue": 335.54,
+          "balance": 392.85,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "856.526.2181",
+          "informed": false,
+          "amount": 58.44,
+          "prevDue": 361.18,
+          "balance": 419.62,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "410.622.6479",
+          "informed": false,
+          "amount": 41.85,
+          "prevDue": 250.25,
+          "balance": 292.1,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "617.415.8580",
+          "informed": false,
+          "amount": 73.43,
+          "prevDue": 279.08,
+          "balance": 352.51,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "443.473.4375",
+          "informed": false,
+          "amount": 41.8,
+          "prevDue": 203.61,
+          "balance": 245.41000000000003,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "781.605.8409",
+          "informed": false,
+          "amount": 64.3,
+          "prevDue": 88.53,
+          "balance": 152.82999999999998,
+          "notes": "",
+          "_prevFromBillId": 6
+        },
+        {
+          "personKey": "443.851.6378",
+          "informed": false,
+          "amount": 58.44,
+          "prevDue": 386.5,
+          "balance": 444.94,
+          "notes": "",
+          "_prevFromBillId": 6
         }
       ]
     }
