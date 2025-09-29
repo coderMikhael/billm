@@ -935,9 +935,9 @@
           "informed": false,
           "amount": 53.39,
           "prevDue": 551.72,
-          "payments": 0,
-          "balance": 605.11,
-          "notes": "",
+          "payments": 357.32,
+          "balance": 247.79000000000002,
+          "notes": "All credits applied",
           "_manualPrev": false
         }
       ]
