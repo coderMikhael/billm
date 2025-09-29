@@ -905,9 +905,9 @@
           "informed": false,
           "amount": 36.8,
           "prevDue": 305.73,
-          "payments": 0,
-          "balance": 342.53000000000003,
-          "notes": "",
+          "payments": 342.53,
+          "balance": 5.684341886080802e-14,
+          "notes": "350 Settled in existing splits",
           "_manualPrev": false
         },
         {
