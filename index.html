@@ -141,7 +141,6 @@
       toggleBtn.textContent = isPwd ? '🙈' : '👁️';
       input.focus();
     });
-    const TOKEN32       = 'ghp_gLcPfl6gXdk5WG';
     // Close modal on backdrop click or Escape
     backdrop.addEventListener('click', (e) => { if(e.target === backdrop){ modal.classList.remove('show'); setTimeout(()=>backdrop.style.display='none', 180); }});
     window.addEventListener('keydown', (e) => { if(e.key === 'Escape' && backdrop.style.display==='flex'){ modal.classList.remove('show'); setTimeout(()=>backdrop.style.display='none', 180); }});
